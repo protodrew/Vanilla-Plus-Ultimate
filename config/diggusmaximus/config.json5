@@ -16,7 +16,7 @@
 	// Automatically pick up drops
 	"autoPickup": false,
 	// Tool required to excavate
-	"requiresTool": true,
+	"requiresTool": false,
 	// Stop before tool breaks
 	"dontBreakTool": true,
 	// Stop excavating when tool breaks
