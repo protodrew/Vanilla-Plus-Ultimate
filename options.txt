@@ -24,7 +24,7 @@ fov:0.5
 screenEffectScale:1.0
 fovEffectScale:1.0
 gamma:1.0
-renderDistance:14
+renderDistance:12
 entityDistanceScaling:1.0
 guiScale:3
 particles:0
@@ -112,7 +112,7 @@ key_key.antighost.reveal:key.keyboard.g
 key_key.charm.openCraftingTable:key.keyboard.v
 key_key.quickspyglasser.use:key.keyboard.c
 key_presencefootsteps.settings.key:key.keyboard.f10
-soundCategory_master:0.22826469
+soundCategory_master:0.078037046
 soundCategory_music:0.12367958
 soundCategory_record:1.0
 soundCategory_weather:1.0
