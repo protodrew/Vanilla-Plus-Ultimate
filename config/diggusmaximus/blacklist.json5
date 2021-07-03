@@ -3,6 +3,7 @@
 	"isWhitelist": true,
 	// Block IDs to blacklist from being mined
 	"blacklistedBlocks": [
+		"minecraft:hay_block",
 		"minecraft:deepslate_lapis_ore",
 		"minecraft:deepslate_coal_ore",
 		"minecraft:coal_ore",
@@ -23,6 +24,7 @@
 		"minecraft:copper_ore",
 		"minecraft:deepslate_emerald_ore",
 		"minecraft:diamond_ore",
+		"minecraft:clay",
 		"minecraft:gold_ore",
 		"minecraft:redstone_ore",
 		"minecraft:nether_quartz_ore",
