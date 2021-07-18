@@ -1,4 +1,5 @@
-crash-reports/
-logs/
-saves/
-screenshots/
+.minecraft/crash-reports/
+.minecraft/logs/
+.minecraft/saves/
+.minecraft/screenshots/
+
