@@ -1,4 +1,4 @@
-version:2724
+version:2730
 autoJump:false
 autoSuggestions:true
 chatColors:true
@@ -107,7 +107,6 @@ key_key.mousewheelie.sort_inventory:key.mouse.middle
 key_key.mousewheelie.scroll_up:amecsapi.key.mouse.scroll.up
 key_key.mousewheelie.scroll_down:amecsapi.key.mouse.scroll.down
 key_key.mousewheelie.pick_tool:key.keyboard.unknown
-key_seamless_loading_screen.keybind.config:key.keyboard.g
 key_key.antighost.reveal:key.keyboard.g
 key_key.slotlock:key.keyboard.left.alt
 key_key.charm.openCraftingTable:key.keyboard.v
