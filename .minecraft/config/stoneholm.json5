@@ -1,5 +1,5 @@
 {
-	// How many iterations of jigsaw generation we do when generating the village. (Default: 12)
+	// How many iterations of jigsaw generation we do when generating the village. (Default: 10)
 	"VILLAGE_SIZE": 8,
 	// Max distance in chunks between villages. (Default: 32)
 	"VILLAGE_SPACING": 128,

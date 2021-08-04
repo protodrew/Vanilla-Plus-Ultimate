@@ -57,7 +57,7 @@
 		/* The minimum amount of leaves that needs to be around the top most log in order for the mod to consider it a tree.
 		   INFO: Only in INSTANTANEOUS mode.
 		*/
-		"minimumLeavesAroundRequired": 2,
+		"minimumLeavesAroundRequired": 1,
 		// When set to true, the mod be applied when cutting trunks.
 		"treeBreaking": true,
 		// When set to true, leaves that should naturally break will be broken instantly.

@@ -22,6 +22,9 @@
   "scaleLimit": 30,
   "easeCreativePermission": true,
   "easeCommandStickPermission": false,
+  "enableDatapackPortalGen": true,
+  "enableDedicatedServerEarlyReload": true,
+  "enableCrossPortalView": true,
   "dimensionRenderRedirect": {
     "immersive_portals:alternate1": "minecraft:overworld",
     "immersive_portals:alternate2": "minecraft:overworld",
