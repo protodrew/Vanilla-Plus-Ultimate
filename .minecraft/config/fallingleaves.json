@@ -52,6 +52,26 @@
     "minecraft:spruce_leaves": {
       "spawnRateFactor": 1.0,
       "isConiferBlock": true
+    },
+    "traverse:fir_leaves": {
+      "spawnRateFactor": 1.0,
+      "isConiferBlock": true
+    },
+    "traverse:brown_autumnal_leaves": {
+      "spawnRateFactor": 1.8,
+      "isConiferBlock": false
+    },
+    "traverse:red_autumnal_leaves": {
+      "spawnRateFactor": 1.8,
+      "isConiferBlock": false
+    },
+    "traverse:yellow_autumnal_leaves": {
+      "spawnRateFactor": 1.8,
+      "isConiferBlock": false
+    },
+    "traverse:orange_autumnal_leaves": {
+      "spawnRateFactor": 1.8,
+      "isConiferBlock": false
     }
   }
 }

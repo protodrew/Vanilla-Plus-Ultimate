@@ -4,7 +4,7 @@ autoSuggestions:true
 chatColors:true
 chatLinks:true
 chatLinksPrompt:true
-enableVsync:false
+enableVsync:true
 entityShadows:true
 forceUnicodeFont:false
 discrete_mouse_scroll:false
@@ -27,8 +27,8 @@ gamma:1.0
 renderDistance:18
 entityDistanceScaling:1.0
 guiScale:3
-particles:0
-maxFps:150
+particles:1
+maxFps:170
 difficulty:2
 graphicsMode:1
 ao:2
@@ -113,6 +113,7 @@ key_key.mousewheelie.scroll_down:amecsapi.key.mouse.scroll.down
 key_key.mousewheelie.pick_tool:key.keyboard.unknown
 key_key.antighost.reveal:key.keyboard.g
 key_key.slotlock:key.keyboard.left.alt
+key_key.lightoverlay.enable_overlay:key.keyboard.f7
 key_key.charm.openCraftingTable:key.keyboard.v
 key_key.quickspyglasser.use:key.keyboard.c
 key_key.slabhelper.halfmine:key.keyboard.grave.accent

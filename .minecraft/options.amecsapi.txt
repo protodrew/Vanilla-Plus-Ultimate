@@ -43,6 +43,7 @@ key_modifiers_key.mousewheelie.scroll_down:
 key_modifiers_key.mousewheelie.pick_tool:
 key_modifiers_key.antighost.reveal:
 key_modifiers_key.slotlock:
+key_modifiers_key.lightoverlay.enable_overlay:
 key_modifiers_key.charm.openCraftingTable:
 key_modifiers_key.quickspyglasser.use:
 key_modifiers_key.slabhelper.halfmine:
