@@ -24,7 +24,7 @@ fov:0.5
 screenEffectScale:1.0
 fovEffectScale:1.0
 gamma:1.0
-renderDistance:17
+renderDistance:20
 entityDistanceScaling:1.0
 guiScale:3
 particles:1
@@ -34,7 +34,7 @@ graphicsMode:1
 ao:2
 biomeBlendRadius:7
 renderClouds:true
-resourcePacks:["vanilla","file/VanillaTweaks_r825388.zip","Fabric Mods","atmosfera/dungeons","betterbeds/fancybeds","charmonium/journeyman","lambdabettergrass/default","cullleaves/smartleaves"]
+resourcePacks:["vanilla","file/VanillaTweaks_r825388.zip","Fabric Mods","atmosfera/dungeons","betterbeds/fancybeds","charmonium/journeyman","cullleaves/smartleaves","lambdabettergrass/default"]
 incompatibleResourcePacks:[]
 lastServer:
 lang:en_us
@@ -118,7 +118,7 @@ key_key.charm.openCraftingTable:key.keyboard.v
 key_key.quickspyglasser.use:key.keyboard.c
 key_key.slabhelper.halfmine:key.keyboard.grave.accent
 key_presencefootsteps.settings.key:key.keyboard.f10
-soundCategory_master:0.078037046
+soundCategory_master:0.5
 soundCategory_music:0.12367958
 soundCategory_record:1.0
 soundCategory_weather:1.0
