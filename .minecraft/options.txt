@@ -24,7 +24,7 @@ fov:0.5
 screenEffectScale:1.0
 fovEffectScale:1.0
 gamma:1.0
-renderDistance:18
+renderDistance:17
 entityDistanceScaling:1.0
 guiScale:3
 particles:1
@@ -34,7 +34,7 @@ graphicsMode:1
 ao:2
 biomeBlendRadius:7
 renderClouds:true
-resourcePacks:["vanilla","file/VanillaTweaks_r825388.zip"]
+resourcePacks:["vanilla","file/VanillaTweaks_r825388.zip","Fabric Mods","atmosfera/dungeons","betterbeds/fancybeds","charmonium/journeyman","lambdabettergrass/default","cullleaves/smartleaves"]
 incompatibleResourcePacks:[]
 lastServer:
 lang:en_us

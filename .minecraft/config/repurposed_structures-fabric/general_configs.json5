@@ -162,77 +162,77 @@
 			/* 
 			   
 			   
-			   Minimum Y height that this dungeon can spawn at. Default is 2.
+			   Minimum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			*/
 			"badlandsDungeonMinHeight": 2,
 			/* 
 			   
 			   
-			   Minimum Y height that this dungeon can spawn at. Default is 2.
+			   Minimum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			*/
 			"darkForestDungeonMinHeight": 2,
 			/* 
 			   
 			   
-			   Minimum Y height that this dungeon can spawn at. Default is 2.
+			   Minimum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			*/
 			"desertDungeonMinHeight": 2,
 			/* 
 			   
 			   
-			   Minimum Y height that this dungeon can spawn at. Default is 2.
+			   Minimum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			*/
 			"jungleDungeonMinHeight": 2,
 			/* 
 			   
 			   
-			   Minimum Y height that this dungeon can spawn at. Default is 2.
+			   Minimum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			*/
 			"mushroomDungeonMinHeight": 2,
 			/* 
 			   
 			   
-			   Minimum Y height that this dungeon can spawn at. Default is 2.
+			   Minimum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			*/
 			"snowDungeonMinHeight": 2,
 			/* 
 			   
 			   
-			   Minimum Y height that this dungeon can spawn at. Default is 2.
+			   Minimum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			*/
 			"icyDungeonMinHeight": 2,
 			/* 
 			   
 			   
-			   Minimum Y height that this dungeon can spawn at. Default is 2.
+			   Minimum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			*/
 			"swampDungeonMinHeight": 2,
 			/* 
 			   
 			   
-			   Minimum Y height that this dungeon can spawn at. Default is 2.
+			   Minimum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			*/
 			"endDungeonMinHeight": 2,
 			/* 
 			   
 			   
-			   Minimum Y height that this dungeon can spawn at. Default is 2.
+			   Minimum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			*/
 			"netherDungeonMinHeight": 2,
 			/* 
 			   
 			   
-			   Minimum Y height that this dungeon can spawn at. Default is 3.
+			   Minimum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			*/
 			"oceanDungeonMinHeight": 3
@@ -241,7 +241,7 @@
 			/* 
 			   
 			   
-			   Maximum Y height that this dungeon can spawn at. Default is 255.
+			   Maximum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			   Setting this to below min height config will make dungeon spawn only at min height.
 			*/
@@ -249,7 +249,7 @@
 			/* 
 			   
 			   
-			   Maximum Y height that this dungeon can spawn at. Default is 255.
+			   Maximum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			   Setting this to below min height config will make dungeon spawn only at min height.
 			*/
@@ -257,7 +257,7 @@
 			/* 
 			   
 			   
-			   Maximum Y height that this dungeon can spawn at. Default is 255.
+			   Maximum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			   Setting this to below min height config will make dungeon spawn only at min height.
 			*/
@@ -265,7 +265,7 @@
 			/* 
 			   
 			   
-			   Maximum Y height that this dungeon can spawn at. Default is 255.
+			   Maximum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			   Setting this to below min height config will make dungeon spawn only at min height.
 			*/
@@ -273,7 +273,7 @@
 			/* 
 			   
 			   
-			   Maximum Y height that this dungeon can spawn at. Default is 255.
+			   Maximum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			   Setting this to below min height config will make dungeon spawn only at min height.
 			*/
@@ -281,7 +281,7 @@
 			/* 
 			   
 			   
-			   Maximum Y height that this dungeon can spawn at. Default is 255.
+			   Maximum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			   Setting this to below min height config will make dungeon spawn only at min height.
 			*/
@@ -289,7 +289,7 @@
 			/* 
 			   
 			   
-			   Maximum Y height that this dungeon can spawn at. Default is 255.
+			   Maximum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			   Setting this to below min height config will make dungeon spawn only at min height.
 			*/
@@ -297,7 +297,7 @@
 			/* 
 			   
 			   
-			   Maximum Y height that this dungeon can spawn at. Default is 255.
+			   Maximum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			   Setting this to below min height config will make dungeon spawn only at min height.
 			*/
@@ -305,7 +305,7 @@
 			/* 
 			   
 			   
-			   Maximum Y height that this dungeon can spawn at. Default is 255.
+			   Maximum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			   Setting this to below min height config will make dungeon spawn only at min height.
 			*/
@@ -313,7 +313,7 @@
 			/* 
 			   
 			   
-			   Maximum Y height that this dungeon can spawn at. Default is 255.
+			   Maximum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			   Setting this to below min height config will make dungeon spawn only at min height.
 			*/
@@ -321,7 +321,7 @@
 			/* 
 			   
 			   
-			   Maximum Y height that this dungeon can spawn at. Default is 255.
+			   Maximum Y height that this dungeon can spawn at.
 			   Note: The dungeon will spawn between min and max y height set in config.
 			   Setting this to below min height config will make dungeon spawn only at min height.
 			*/
@@ -347,14 +347,12 @@
 			   
 			   
 			   Min Y height that the starting point can spawn at.
-			   Default is 56.
 			*/
 			"jungleFortressMinHeight": 56,
 			/* 
 			   
 			   
 			   Max Y height that the starting point can spawn at.
-			   Default is 63.
 			   If below min height, this will be read as min.
 			*/
 			"jungleFortressMaxHeight": 63,
@@ -561,85 +559,85 @@
 			/* 
 			   
 			   
-			   Min Y height of Mineshaft. Default is 8.
+			   Min Y height of Mineshaft.max = 30
 			*/
 			"birchMineshaftMinHeight": 8,
 			/* 
 			   
 			   
-			   Min Y height of Mineshaft. Default is 8.
+			   Min Y height of Mineshaft.max = 30
 			*/
 			"jungleMineshaftMinHeight": 8,
 			/* 
 			   
 			   
-			   Min Y height of Mineshaft. Default is 8.
+			   Min Y height of Mineshaft.max = 30
 			*/
 			"desertMineshaftMinHeight": 8,
 			/* 
 			   
 			   
-			   Min Y height of Mineshaft. Default is 8.
+			   Min Y height of Mineshaft.max = 30
 			*/
 			"stoneMineshaftMinHeight": 8,
 			/* 
 			   
 			   
-			   Min Y height of Mineshaft. Default is 8.
+			   Min Y height of Mineshaft.max = 30
 			*/
 			"savannaMineshaftMinHeight": 8,
 			/* 
 			   
 			   
-			   Min Y height of Mineshaft. Default is 8.
+			   Min Y height of Mineshaft.max = 30
 			*/
 			"icyMineshaftMinHeight": 8,
 			/* 
 			   
 			   
-			   Min Y height of Mineshaft. Default is 8.
+			   Min Y height of Mineshaft.max = 30
 			*/
 			"oceanMineshaftMinHeight": 8,
 			/* 
 			   
 			   
-			   Min Y height of Mineshaft. Default is 8.
+			   Min Y height of Mineshaft.max = 30
 			*/
 			"taigaMineshaftMinHeight": 8,
 			/* 
 			   
 			   
-			   Min Y height of Mineshaft. Default is 8.
+			   Min Y height of Mineshaft.max = 30
 			*/
 			"swampMineshaftMinHeight": 8,
 			/* 
 			   
 			   
-			   Min Y height of Mineshaft. Default is 8.
+			   Min Y height of Mineshaft.max = 30
 			*/
 			"darkForestMineshaftMinHeight": 8,
 			/* 
 			   
 			   
-			   Min Y height of Mineshaft. Default is 27.
+			   Min Y height of Mineshaft.max = 30
 			*/
 			"endMineshaftMinHeight": 30,
 			/* 
 			   
 			   
-			   Min Y height of Mineshaft. Default is 8.
+			   Min Y height of Mineshaft.max = 30
 			*/
 			"netherMineshaftMinHeight": 6,
 			/* 
 			   
 			   
-			   Min Y height of Mineshaft. Default is 8.
+			   Min Y height of Mineshaft.max = 30
 			*/
 			"crimsonMineshaftMinHeight": 6,
 			/* 
 			   
 			   
-			   Min Y height of Mineshaft. Default is 8.
+			   Min Y height of Mineshaft.max = 30
 			*/
 			"warpedMineshaftMinHeight": 6
 		},
@@ -647,98 +645,98 @@
 			/* 
 			   
 			   
-			   Max Y height of Mineshaft. Default is 45.
+			   Max Y height of Mineshaft.max = 30
 			   If below min height, this will be read as min.
 			*/
 			"birchMineshaftMaxHeight": 45,
 			/* 
 			   
 			   
-			   Max Y height of Mineshaft. Default is 45.
+			   Max Y height of Mineshaft.max = 30
 			   If below min height, this will be read as min.
 			*/
 			"jungleMineshaftMaxHeight": 45,
 			/* 
 			   
 			   
-			   Max Y height of Mineshaft. Default is 45.
+			   Max Y height of Mineshaft.max = 30
 			   If below min height, this will be read as min.
 			*/
 			"desertMineshaftMaxHeight": 45,
 			/* 
 			   
 			   
-			   Max Y height of Mineshaft. Default is 45.
+			   Max Y height of Mineshaft.max = 30
 			   If below min height, this will be read as min.
 			*/
 			"stoneMineshaftMaxHeight": 45,
 			/* 
 			   
 			   
-			   Max Y height of Mineshaft. Default is 45.
+			   Max Y height of Mineshaft.max = 30
 			   If below min height, this will be read as min.
 			*/
 			"savannaMineshaftMaxHeight": 45,
 			/* 
 			   
 			   
-			   Max Y height of Mineshaft. Default is 45.
+			   Max Y height of Mineshaft.max = 30
 			   If below min height, this will be read as min.
 			*/
 			"icyMineshaftMaxHeight": 45,
 			/* 
 			   
 			   
-			   Max Y height of Mineshaft. Default is 26.
+			   Max Y height of Mineshaft.max = 30
 			   If below min height, this will be read as min.
 			*/
 			"oceanMineshaftMaxHeight": 26,
 			/* 
 			   
 			   
-			   Max Y height of Mineshaft. Default is 45.
+			   Max Y height of Mineshaft.max = 30
 			   If below min height, this will be read as min.
 			*/
 			"taigaMineshaftMaxHeight": 45,
 			/* 
 			   
 			   
-			   Max Y height of Mineshaft. Default is 45.
+			   Max Y height of Mineshaft.max = 30
 			   If below min height, this will be read as min.
 			*/
 			"swampMineshaftMaxHeight": 45,
 			/* 
 			   
 			   
-			   Max Y height of Mineshaft. Default is 45.
+			   Max Y height of Mineshaft.max = 30
 			   If below min height, this will be read as min.
 			*/
 			"darkForestMineshaftMaxHeight": 45,
 			/* 
 			   
 			   
-			   Max Y height of Mineshaft. Default is 35.
+			   Max Y height of Mineshaft.max = 30
 			   If below min height, this will be read as min.
 			*/
 			"endMineshaftMaxHeight": 40,
 			/* 
 			   
 			   
-			   Max Y height of Mineshaft. Default is 13.
+			   Max Y height of Mineshaft.max = 30
 			   If below min height, this will be read as min.
 			*/
 			"netherMineshaftMaxHeight": 17,
 			/* 
 			   
 			   
-			   Max Y height of Mineshaft. Default is 13.
+			   Max Y height of Mineshaft.max = 30
 			   If below min height, this will be read as min.
 			*/
 			"crimsonMineshaftMaxHeight": 14,
 			/* 
 			   
 			   
-			   Max Y height of Mineshaft. Default is 13.
+			   Max Y height of Mineshaft.max = 30
 			   If below min height, this will be read as min.
 			*/
 			"warpedMineshaftMaxHeight": 14
@@ -833,7 +831,7 @@
 			/* 
 			   
 			   
-			   Add End Mineshafts to End Barrens and End Islands biome.
+			   Add End Mineshafts to End Barrens/End Islands biome
 			*/
 			"barrensIslandsEndMineshafts": false
 		}
@@ -1073,7 +1071,7 @@
 			   
 			   Size of Nether Stronghold.
 			   This number is how many pieces deep a branch can go from the center piece.
-			   1 for supertiny and 20 for supermassive Strongholds.
+			   1 for supertiny and 30 for supermassive Strongholds.
 			*/
 			"netherStrongholdSize": 15,
 			/* 
@@ -1088,17 +1086,52 @@
 			   
 			   
 			   Min Y height that the starting point can spawn at.
-			   Default is 30.
 			*/
 			"netherStrongholdMinHeight": 6,
 			/* 
 			   
 			   
 			   Max Y height that the starting point can spawn at.
-			   Default is 35.
 			   If below min height, this will be read as min.
 			*/
 			"netherStrongholdMaxHeight": 36
+		},
+		"end": {
+			/* 
+			   
+			   
+			   Size of End Stronghold.
+			   This number is how many pieces deep a branch can go from the center piece.
+			   1 for supertiny and 30 for supermassive Strongholds.
+			*/
+			"endStrongholdSize": 15,
+			/* 
+			   
+			   
+			   How rare are End-styled Strongholds in End-category biome's islands.
+			   1 for spawning in most chunks and 10001 for no spawn.
+			   Note: Eyes of Ender will work and show the closest End Stronghold too.
+			*/
+			"endStrongholdAverageChunkDistance": 130,
+			/* 
+			   
+			   
+			   Min Y height that the starting point can spawn at.
+			*/
+			"endStrongholdMinHeight": 4,
+			/* 
+			   
+			   
+			   Max Y height that the starting point can spawn at.
+			   If below min height, this will be read as min.
+			*/
+			"endStrongholdMaxHeight": 5,
+			/* 
+			   
+			   
+			   How far above or below the End Stronghold's pieces can generate away from the center piece.
+			*/
+			"endStrongholdVerticalRange": 45
 		}
 	},
 	"RSTemplesConfig": {
@@ -1139,76 +1172,140 @@
 		"netherSoulTempleAverageChunkDistance": 27
 	},
 	"RSVillagesConfig": {
-		/* 
-		   
-		   
-		   How rare are Badlands Villages in Badland biomes.
-		   1 for spawning in most chunks and 1001 for no spawn.
-		*/
-		"badlandsVillageAverageChunkDistance": 30,
-		/* 
-		   
-		   
-		   How rare are Birch Villages in Birch biomes.
-		   1 for spawning in most chunks and 1001 for no spawn.
-		*/
-		"birchVillageAverageChunkDistance": 38,
-		/* 
-		   
-		   
-		   How rare are Dark Forest Villages in Dark Forest biomes.
-		   1 for spawning in most chunks and 1001 for no spawn.
-		*/
-		"darkForestVillageAverageChunkDistance": 38,
-		/* 
-		   
-		   
-		   How rare are Jungle Villages in Jungle biomes.
-		   1 for spawning in most chunks and 1001 for no spawn.
-		*/
-		"jungleVillageAverageChunkDistance": 38,
-		/* 
-		   
-		   
-		   How rare are Swamp Villages in Swamp biomes.
-		   1 for spawning in most chunks and 1001 for no spawn.
-		*/
-		"swampVillageAverageChunkDistance": 38,
-		/* 
-		   
-		   
-		   How rare are Mountains Villages in Mountains biomes.
-		   1 for spawning in most chunks and 1001 for no spawn.
-		*/
-		"mountainsVillageAverageChunkDistance": 38,
-		/* 
-		   
-		   
-		   How rare are Giant Taiga Villages in Giant Taiga biomes.
-		   1 for spawning in most chunks and 1001 for no spawn.
-		*/
-		"giantTaigaVillageAverageChunkDistance": 38,
-		/* 
-		   
-		   
-		   How rare are Oak Villages in forest category biomes that are not birch or dark forest.
-		   1 for spawning in most chunks and 1001 for none.
-		*/
-		"oakVillageAverageChunkDistance": 38,
-		/* 
-		   
-		   
-		   How rare are Crimson Village in Crimson Forest biomes.
-		   1 for spawning in most chunks and 1001 for none.
-		*/
-		"crimsonVillageAverageChunkDistance": 30,
-		/* 
-		   
-		   
-		   How rare are Warped Village in Warped Forest biomes.
-		   1 for spawning in most chunks and 1001 for none.
-		*/
-		"warpedVillageAverageChunkDistance": 30
+		"spawnrate": {
+			/* 
+			   
+			   
+			   How rare are Badlands Villages in Badland biomes.
+			   1 for spawning in most chunks and 1001 for no spawn.
+			*/
+			"badlandsVillageAverageChunkDistance": 34,
+			/* 
+			   
+			   
+			   How rare are Birch Villages in Birch biomes.
+			   1 for spawning in most chunks and 1001 for no spawn.
+			*/
+			"birchVillageAverageChunkDistance": 47,
+			/* 
+			   
+			   
+			   How rare are Dark Forest Villages in Dark Forest biomes.
+			   1 for spawning in most chunks and 1001 for no spawn.
+			*/
+			"darkForestVillageAverageChunkDistance": 47,
+			/* 
+			   
+			   
+			   How rare are Jungle Villages in Jungle biomes.
+			   1 for spawning in most chunks and 1001 for no spawn.
+			*/
+			"jungleVillageAverageChunkDistance": 47,
+			/* 
+			   
+			   
+			   How rare are Swamp Villages in Swamp biomes.
+			   1 for spawning in most chunks and 1001 for no spawn.
+			*/
+			"swampVillageAverageChunkDistance": 47,
+			/* 
+			   
+			   
+			   How rare are Mountains Villages in Mountains biomes.
+			   1 for spawning in most chunks and 1001 for no spawn.
+			*/
+			"mountainsVillageAverageChunkDistance": 47,
+			/* 
+			   
+			   
+			   How rare are Giant Taiga Villages in Giant Taiga biomes.
+			   1 for spawning in most chunks and 1001 for no spawn.
+			*/
+			"giantTaigaVillageAverageChunkDistance": 47,
+			/* 
+			   
+			   
+			   How rare are Oak Villages in forest category biomes that are not birch or dark forest.
+			   1 for spawning in most chunks and 1001 for none.
+			*/
+			"oakVillageAverageChunkDistance": 47,
+			/* 
+			   
+			   
+			   How rare are Crimson Village in Crimson Forest biomes.
+			   1 for spawning in most chunks and 1001 for none.
+			*/
+			"crimsonVillageAverageChunkDistance": 30,
+			/* 
+			   
+			   
+			   How rare are Warped Village in Warped Forest biomes.
+			   1 for spawning in most chunks and 1001 for none.
+			*/
+			"warpedVillageAverageChunkDistance": 30
+		},
+		"size": {
+			/* 
+			   
+			   
+			   Size of the village. This is how many pieces long a path can be from the start piece.
+			*/
+			"badlandsVillageSize": 10,
+			/* 
+			   
+			   
+			   Size of the village. This is how many pieces long a path can be from the start piece.
+			*/
+			"birchVillageSize": 6,
+			/* 
+			   
+			   
+			   Size of the village. This is how many pieces long a path can be from the start piece.
+			*/
+			"darkForestVillageSize": 6,
+			/* 
+			   
+			   
+			   Size of the village. This is how many pieces long a path can be from the start piece.
+			*/
+			"jungleVillageSize": 8,
+			/* 
+			   
+			   
+			   Size of the village. This is how many pieces long a path can be from the start piece.
+			*/
+			"swampVillageSize": 6,
+			/* 
+			   
+			   
+			   Size of the village. This is how many pieces long a path can be from the start piece.
+			*/
+			"mountainsVillageSize": 6,
+			/* 
+			   
+			   
+			   Size of the village. This is how many pieces long a path can be from the start piece.
+			*/
+			"giantTaigaVillageSize": 6,
+			/* 
+			   
+			   
+			   Size of the village. This is how many pieces long a path can be from the start piece.
+			*/
+			"oakVillageSize": 6,
+			/* 
+			   
+			   
+			   Size of the village. This is how many pieces long a path can be from the start piece.
+			*/
+			"crimsonVillageSize": 6,
+			/* 
+			   
+			   
+			   Size of the village. This is how many pieces long a path can be from the start piece.
+			*/
+			"warpedVillageSize": 6
+		}
 	},
 	"RSWellsConfig": {
 		/* 
