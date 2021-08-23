@@ -23,8 +23,8 @@ mouseSensitivity:0.5
 fov:0.5
 screenEffectScale:1.0
 fovEffectScale:1.0
-gamma:1.0
-renderDistance:20
+gamma:0.75
+renderDistance:18
 entityDistanceScaling:1.0
 guiScale:3
 particles:1
