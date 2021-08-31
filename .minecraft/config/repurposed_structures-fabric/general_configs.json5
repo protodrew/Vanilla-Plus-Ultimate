@@ -621,12 +621,6 @@
 			   
 			   Min Y height of Mineshaft.max = 30
 			*/
-			"endMineshaftMinHeight": 30,
-			/* 
-			   
-			   
-			   Min Y height of Mineshaft.max = 30
-			*/
 			"netherMineshaftMinHeight": 6,
 			/* 
 			   
@@ -718,13 +712,6 @@
 			   Max Y height of Mineshaft.max = 30
 			   If below min height, this will be read as min.
 			*/
-			"endMineshaftMaxHeight": 40,
-			/* 
-			   
-			   
-			   Max Y height of Mineshaft.max = 30
-			   If below min height, this will be read as min.
-			*/
 			"netherMineshaftMaxHeight": 17,
 			/* 
 			   
@@ -747,19 +734,19 @@
 			   
 			   Size of the mineshaft. This is how many pieces long a branch can be from the start piece.
 			*/
-			"birchMineshaftSize": 9,
+			"birchMineshaftSize": 10,
 			/* 
 			   
 			   
 			   Size of the mineshaft. This is how many pieces long a branch can be from the start piece.
 			*/
-			"jungleMineshaftSize": 9,
+			"jungleMineshaftSize": 6,
 			/* 
 			   
 			   
 			   Size of the mineshaft. This is how many pieces long a branch can be from the start piece.
 			*/
-			"desertMineshaftSize": 9,
+			"desertMineshaftSize": 6,
 			/* 
 			   
 			   
@@ -831,9 +818,11 @@
 			/* 
 			   
 			   
-			   Add End Mineshafts to End Barrens/End Islands biome
+			   The minimum thickness of End islands that the End Mineshaft can spawn in.
+			   So 30 means the End Mineshaft will spawn in land that is at least 30 blocks vertically in the area.
+			   Do 0 to turn off this check and allow the End Mineshaft to spawn anywhere including floating in midair
 			*/
-			"barrensIslandsEndMineshafts": false
+			"endMineshaftMinIslandThickness": 30
 		}
 	},
 	"RSOutpostsConfig": {

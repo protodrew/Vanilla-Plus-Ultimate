@@ -8,9 +8,13 @@
 		"minecraft:nether_gold_ore",
 		"minecraft:deepslate_lapis_ore",
 		"minecraft:deepslate_coal_ore",
+		"minecraft:cobbled_deepslate",
 		"minecraft:coal_ore",
 		"minecraft:calcite",
 		"minecraft:lapis_ore",
+		"minecraft:blackstone",
+		"minecraft:brown_mushroom_block",
+		"minecraft:red_mushroom_block",
 		"minecraft:deepslate_redstone_ore",
 		"minecraft:deepslate_gold_ore",
 		"minecraft:glowstone",
@@ -34,6 +38,7 @@
 		"minecraft:dark_oak_log",
 		"minecraft:amethyst_block",
 		"minecraft:smooth_basalt",
+		"minecraft:mushroom_stem",
 		"minecraft:iron_ore",
 		"minecraft:emerald_ore"
 	]

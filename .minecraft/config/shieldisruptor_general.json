@@ -1,0 +1,7 @@
+{
+  "isEnabled": true,
+  "hiddenItems": [
+    "minecraft:shield",
+    "minecraft:totem_of_undying"
+  ]
+}
