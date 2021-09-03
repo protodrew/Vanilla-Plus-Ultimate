@@ -6,12 +6,12 @@
     "minecraft:overworld": {
       "cancelled": true,
       "radius": 750.0,
-      "centerX": -2282.0,
-      "centerZ": -2313.0,
+      "centerX": 248.0,
+      "centerZ": -89.0,
       "iterator": "concentric",
       "shape": "square",
       "count": 8975,
-      "time": 223115
+      "time": 183051
     }
   }
 }

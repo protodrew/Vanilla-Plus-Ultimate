@@ -28,7 +28,7 @@ renderDistance:18
 entityDistanceScaling:1.0
 guiScale:3
 particles:0
-maxFps:170
+maxFps:165
 difficulty:2
 graphicsMode:1
 ao:2
