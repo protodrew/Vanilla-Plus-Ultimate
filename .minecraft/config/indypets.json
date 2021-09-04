@@ -1,6 +1,6 @@
 {
-  "independentCats": true,
-  "independentParrots": true,
-  "independentWolves": true,
+  "independentCats": false,
+  "independentParrots": false,
+  "independentWolves": false,
   "silentMode": false
 }

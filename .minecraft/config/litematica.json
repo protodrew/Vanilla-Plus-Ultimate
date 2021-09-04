@@ -12,12 +12,12 @@
     "schematicOverlayColorWrongState": "#4CFF9010"
   },
   "Generic": {
-    "areaSelectionsPerWorld": true,
+    "areaSelectionsPerWorld": false,
     "changeSelectedCornerOnMove": true,
     "debugLogging": false,
     "easyPlaceMode": false,
     "easyPlaceHoldEnabled": false,
-    "executeRequireHoldingTool": true,
+    "executeRequireHoldingTool": false,
     "fixRailRotation": true,
     "highlightBlockInInventory": false,
     "layerModeFollowsPlayer": false,
@@ -31,14 +31,14 @@
     "placementRestriction": false,
     "renderMaterialListInGuis": true,
     "renderThreadNoTimeout": true,
-    "toolItemEnabled": true,
+    "toolItemEnabled": false,
     "pasteReplaceBehavior": "none",
     "selectionCornersMode": "corners",
     "pasteCommandInterval": 1,
     "pasteCommandLimit": 64,
     "pasteCommandNameSetblock": "setblock",
     "pickBlockableSlots": "1,2,3,4,5",
-    "toolItem": "minecraft:stick"
+    "toolItem": ""
   },
   "Hotkeys": {
     "addSelectionBox": {
@@ -899,8 +899,8 @@
     "blockInfoOverlayEnabled": true,
     "infoOverlaysTargetFluids": false,
     "statusInfoHud": false,
-    "statusInfoHudAuto": true,
-    "verifierOverlayEnabled": true,
+    "statusInfoHudAuto": false,
+    "verifierOverlayEnabled": false,
     "warnDisabledRendering": true,
     "blockInfoLinesAlignment": "top_right",
     "blockInfoOverlayAlignment": "top_center",
