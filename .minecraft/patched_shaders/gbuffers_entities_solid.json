@@ -14,6 +14,7 @@
         "Normal"
     ],
     "samplers": [
+        { "name": "gtexture" },
         { "name": "texture" },
         { "name": "tex" },
         { "name": "lightmap" },
@@ -50,6 +51,8 @@
         { "name": "iris_ColorModulator", "type": "float", "count": 4, "values": [ 1.0, 1.0, 1.0, 1.0 ] },
         { "name": "iris_FogStart", "type": "float", "count": 1, "values": [ 0.0 ] },
         { "name": "iris_FogEnd", "type": "float", "count": 1, "values": [ 1.0 ] },
+        { "name": "iris_LineWidth", "type": "float", "count": 1, "values": [ 1.0 ] },
+        { "name": "iris_ScreenSize", "type": "float", "count": 2, "values": [ 1.0, 1.0 ] },
         { "name": "iris_FogColor", "type": "float", "count": 4, "values": [ 0.0, 0.0, 0.0, 0.0 ] }
     ]
 }

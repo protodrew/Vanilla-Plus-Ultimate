@@ -801,8 +801,8 @@
 #define gl_MultiTexCoord4  vec4(0.0, 0.0, 0.0, 1.0)
 #define gl_MultiTexCoord3  vec4(0.0, 0.0, 0.0, 1.0)
 #define gl_MultiTexCoord2  vec4(0.0, 0.0, 0.0, 1.0)
-#define gl_MultiTexCoord1 vec4(0.0, 0.0, 0.0, 1.0)
-#define gl_MultiTexCoord0 vec4(0.0, 0.0, 0.0, 1.0)
+#define gl_MultiTexCoord1 vec4(240.0, 240.0, 0.0, 1.0)
+#define gl_MultiTexCoord0 vec4(0.5, 0.5, 0.0, 1.0)
 #define gl_ProjectionMatrix iris_ProjMat
 #define gl_FrontColor iris_FrontColor
 #define gl_FogFragCoord iris_FogFragCoord

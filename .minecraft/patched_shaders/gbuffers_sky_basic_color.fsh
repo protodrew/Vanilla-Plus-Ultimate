@@ -858,5 +858,7 @@ void irisMain() {
 void main() {
     irisMain();
 
-// alpha test disabled
+    if (!(gl_FragData[0].a > 1.0E-4)) {
+        discard;
+    }
 }

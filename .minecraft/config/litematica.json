@@ -15,10 +15,14 @@
     "areaSelectionsPerWorld": false,
     "changeSelectedCornerOnMove": true,
     "debugLogging": false,
-    "easyPlaceMode": false,
+    "easyPlaceFirst": true,
     "easyPlaceHoldEnabled": false,
+    "easyPlaceMode": false,
+    "easyPlaceSinglePlayerHandling": true,
+    "easyPlaceProtocolV3": true,
     "executeRequireHoldingTool": false,
     "fixRailRotation": true,
+    "generateLowercaseNames": true,
     "highlightBlockInInventory": false,
     "layerModeFollowsPlayer": false,
     "loadEntireSchematics": false,
@@ -77,16 +81,16 @@
         "cancel": true
       }
     },
-    "easyPlaceActivation": {
-      "keys": "",
+    "easyPlaceUseKey": {
+      "keys": "BUTTON_2",
       "settings": {
         "activate_on": "PRESS",
         "context": "INGAME",
-        "allow_empty": true,
-        "allow_extra_keys": true,
-        "order_sensitive": false,
+        "allow_empty": false,
+        "allow_extra_keys": false,
+        "order_sensitive": true,
         "exclusive": false,
-        "cancel": false
+        "cancel": true
       }
     },
     "easyPlaceToggle": {

@@ -168,7 +168,7 @@
 #Variant chains crafted from vanilla metal ingots and nuggets.
 "VariantChains Enabled" = true
 #Chests available in all types of vanilla wood.
-"VariantChests Enabled" = true
+"VariantChests Enabled" = false
 #Ladders available in all types of vanilla wood.
 "VariantLadders Enabled" = true
 #Variants lanterns crafted from vanilla metal nuggets and torches.

@@ -1,6 +1,7 @@
 .git
 .gitignore
 .minecraft/crash-reports
+.minecraft/hs_err_pid56405.log
 .minecraft/logs
 .minecraft/saves
 .minecraft/screenshots
