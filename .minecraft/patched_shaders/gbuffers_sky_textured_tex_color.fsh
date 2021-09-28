@@ -129,7 +129,7 @@
 
 #define MC_GL_ARB_texture_barrier
 
-#define MC_VERSION 10710 Definitive Edition
+#define MC_VERSION 11701
 
 #define MC_GL_ARB_buffer_storage
 
@@ -833,16 +833,17 @@ vec4 shadow2D(sampler2DShadow sampler, vec3 coord) { return vec4(texture(sampler
 vec4 shadow2DLod(sampler2DShadow sampler, vec3 coord, float lod) { return vec4(textureLod(sampler, coord, lod)); }
 #define MC_RENDER_QUALITY 1.0
 #define MC_SHADOW_QUALITY 1.0
-/* DRAWBUFFERS:02 */ //0=gcolor, 2=gnormal for normals
 
-varying vec2 texcoord;
-varying vec4 color;
 uniform sampler2D texture;
 
-void irisMain() {
+varying vec2 texcoord;
+varying vec4 glcolor;
 
-	gl_FragData[0] = texture2D(texture, texcoord.xy)*color;
-    gl_FragData[1] = vec4(0.0); //fills normal buffer with 0.0, improves overall performance
+void irisMain() {
+	vec4 color = texture2D(texture, texcoord) * glcolor;
+
+/* DRAWBUFFERS:0 */
+	gl_FragData[0] = color; //gcolor
 }
 
 void main() {

@@ -40,7 +40,6 @@ key_modifiers_iris.keybind.reload:
 key_modifiers_iris.keybind.toggleShaders:
 key_modifiers_iris.keybind.shaderPackSelection:
 key_modifiers_key.antighost.reveal:
-key_modifiers_key.charm.openCraftingTable:
 key_modifiers_key.mousewheelie.open_config_screen:
 key_modifiers_key.mousewheelie.sort_inventory:
 key_modifiers_key.mousewheelie.scroll_up:

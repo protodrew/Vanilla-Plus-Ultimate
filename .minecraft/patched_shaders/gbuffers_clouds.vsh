@@ -129,7 +129,7 @@
 
 #define MC_GL_ARB_texture_barrier
 
-#define MC_VERSION 10710 Definitive Edition
+#define MC_VERSION 11701
 
 #define MC_GL_ARB_buffer_storage
 
@@ -849,36 +849,12 @@ vec4 shadow2DLod(sampler2DShadow sampler, vec3 coord, float lod) { return vec4(t
 #define MC_RENDER_QUALITY 1.0
 #define MC_SHADOW_QUALITY 1.0
 
-//#define TAA
-
 varying vec2 texcoord;
-varying vec4 color;
-
-#ifdef TAA
-uniform float viewHeight;
-uniform float viewWidth;
-vec2 texelSize = vec2(1.0/viewWidth,1.0/viewHeight);
-uniform int framemod8;
-const vec2[8] offsets = vec2[8](vec2(1./8.,-3./8.),
-								vec2(-1.,3.)/8.,
-								vec2(5.0,1.)/8.,
-								vec2(-3,-5.)/8.,
-								vec2(-5.,5.)/8.,
-								vec2(-7.,-1.)/8.,
-								vec2(3,7.)/8.,
-								vec2(7.,-7.)/8.);
-#endif
+varying vec4 glcolor;
 
 void main() {
 	gl_Position = ftransform();
-	gl_FogFragCoord = length(gl_Position.xyz);
-	
-#ifdef TAA
-	gl_Position.xy += offsets[framemod8] * gl_Position.w*texelSize;
-#endif
-
-	texcoord = (gl_MultiTexCoord0).xy;
-	
-	color = gl_Color;
+	texcoord = (iris_TextureMat * gl_MultiTexCoord0).xy;
+	glcolor = gl_Color;
 }
 

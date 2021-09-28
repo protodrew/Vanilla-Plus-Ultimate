@@ -45,14 +45,9 @@ vec4 shadow2DLod(sampler2DShadow sampler, vec3 coord, float lod) { return vec4(t
 #define MC_SHADOW_QUALITY 1.0
 
 varying vec2 texcoord;
-varying vec4 color;
 
 void main() {
-	
 	gl_Position = ftransform();
-	
-	texcoord = (gl_MultiTexCoord0).xy;
-
-	color = gl_Color;
+	texcoord = (mat4(1.0) * gl_MultiTexCoord0).xy;
 }
 

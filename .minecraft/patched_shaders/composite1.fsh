@@ -32,149 +32,294 @@ vec4 shadow2D(sampler2DShadow sampler, vec3 coord) { return vec4(texture(sampler
 vec4 shadow2DLod(sampler2DShadow sampler, vec3 coord, float lod) { return vec4(textureLod(sampler, coord, lod)); }
 #define MC_RENDER_QUALITY 1.0
 #define MC_SHADOW_QUALITY 1.0
-/* DRAWBUFFERS:3 */
 
-/* Temporal anti-aliasing (TAA) and adaptive sharpening implementation based on Chocapic13, all credits belong to him:
-https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/1293898-1-14-chocapic13s-shaders */
+	#define Global
+	#define fsh
 
-//#define TAA						//Toggle temporal anti-aliasing (TAA)
-#define TAA_quality	2				//[1 2] Fast is more blurry during movement compared to fancy.
 
-#define Adaptive_sharpening			//Toggle adaptive sharpening. Recommended to use with TAA. Disabling TAA also disables adaptive sharpening.
-#define AS_sharpening 0.5 			//[0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 1.1 1.2 1.3 1.4 1.5 1.6 1.7 1.8 1.9 2.0] Adjust sharpening strength.
+#ifdef fsh
+	#ifdef Global
+		//////////////////////////////////////////////////////////////////////////////////
+		/////////DOF File, Credit to Sildur for dof base./////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////
 
-varying vec2 texcoord;
-uniform sampler2D colortex0;		//everything
+		// #define Depth_of_Field	//Simulates eye focusing on objects. Low performance impact
+			//#define Distance_Blur	//Requires Depth of Field to be enabled. Replaces eye focusing effect with distance being blurred instead.
+			#define DoF_Strength 75.0	//[50.0  55.0  60.0  65.0  70.0  75.0  80.0  85.0  90.0  95.0  100.0  105.0  110.0  115.0  120.0  125.0  130.0  135.0  140.0  145.0  150.0]
+			#define Dof_Distance_View 128	//[128 192 256 320 384 448 512]
+			#define DOF_FOCAL 0.011 //[0.010 0.011 0.012 0.013 0.014 0.015 0.016 0.017 0.018 0.019 0.020 0.021 0.022 0.023 0.024 0.025 0.026 0.027 0.028 0.029 0.030 0.031 0.032 0.033 0.034 0.035 0.036 0.037 0.038 0.039 0.040 0.041 0.042 0.043 0.044 0.045 0.046 0.047 0.048 0.049 0.050 0.051 0.052 0.053 0.054 0.055 0.056 0.057 0.058 0.059 0.060 0.061 0.062 0.063 0.064 0.065 0.066 0.067 0.068 0.069 0.070 0.071 0.072 0.073 0.074 0.075 0.076 0.077 0.078 0.079 0.080 0.081 0.082 0.083 0.084 0.085 0.086 0.087 0.088 0.089 0.090 0.091 0.092 0.093 0.094 0.095 0.096 0.097 0.098 0.099 0.100]
 
-#ifdef TAA
-const bool colortex3Clear = false;
-uniform sampler2D colortex3;		//TAA mixed with everything
-uniform sampler2D depthtex0;
-uniform float viewHeight;
-uniform float viewWidth;
-vec2 texelSize = vec2(1.0/viewWidth,1.0/viewHeight);
-uniform mat4 gbufferProjectionInverse;
-uniform mat4 gbufferModelViewInverse;
-uniform mat4 gbufferPreviousProjection;
-uniform mat4 gbufferPreviousModelView;
-uniform vec3 cameraPosition;
-uniform vec3 previousCameraPosition;
+		varying vec2 texcoord;
+		varying vec4 color;
+		uniform sampler2D texture;
 
-#define BLEND_FACTOR 0.1 			//[0.01 0.02 0.03 0.04 0.05 0.06 0.08 0.1 0.12 0.14 0.16] higher values = more flickering but sharper image, lower values = less flickering but the image will be blurrier
-#define MOTION_REJECTION 0.5		//[0.0 0.05 0.1 0.15 0.2 0.25 0.3 0.35 0.4 0.5] //Higher values=sharper image in motion at the cost of flickering
-#define ANTI_GHOSTING 1.0			//[0.0 0.25 0.5 0.75 1.0] High values reduce ghosting but may create flickering
-#define FLICKER_REDUCTION 0.75		//[0.0 0.25 0.5 0.75 1.0] High values reduce flickering but may reduce sharpness
-#define diagonal3(m) vec3((m)[0].x, (m)[1].y, m[2].z)
-#define  projMAD(m, v) (diagonal3(m) * (v) + (m)[3].xyz)
+		#ifdef Depth_of_Field
 
-vec3 toClipSpace3Prev(vec3 viewSpacePosition) {
-    return projMAD(gbufferPreviousProjection, viewSpacePosition) / -viewSpacePosition.z * 0.5 + 0.5;
-}
+			uniform sampler2D depthtex0;	//everything
+			uniform sampler2D depthtex1;	//everything but transparency
+			uniform sampler2D depthtex2;	//everything but transparency+hand
+			uniform float near;
+			uniform float far;
+			uniform float aspectRatio;
+			uniform float viewWidth;
+			uniform float rainStrength;
+			uniform vec3 cameraPosition;
+			uniform vec3 previousCameraPosition;
+			uniform mat4 gbufferProjectionInverse;
+			uniform mat4 gbufferPreviousProjection;
+			uniform mat4 gbufferModelViewInverse;
+			uniform mat4 gbufferPreviousModelView;
 
-vec3 toScreenSpace(vec3 p) {
-	vec4 iProjDiag = vec4(gbufferProjectionInverse[0].x, gbufferProjectionInverse[1].y, gbufferProjectionInverse[2].zw);
-    vec3 p3 = p * 2.0 - 1.0;
-    vec4 fragposition = iProjDiag * p3.xyzz + gbufferProjectionInverse[3];
-    return fragposition.xyz / fragposition.w;
-}
 
-#if TAA_quality == 2
-//approximation from SMAA presentation from siggraph 2016
-vec3 FastCatmulRom(sampler2D colorTex, vec2 texcoord, vec4 rtMetrics, float sharpenAmount){
-    vec2 position = rtMetrics.zw * texcoord;
-    vec2 centerPosition = floor(position - 0.5) + 0.5;
-    vec2 f = position - centerPosition;
-    vec2 f2 = f * f;
-    vec2 f3 = f * f2;
+			//Dof constant values
+			const float focal = DOF_FOCAL;
+			float aperture = 0.008;
+			const float sizemult = DoF_Strength;
 
-    float c = sharpenAmount;
-    vec2 w0 =        -c  * f3 +  2.0 * c         * f2 - c * f;
-    vec2 w1 =  (2.0 - c) * f3 - (3.0 - c)        * f2         + 1.0;
-    vec2 w2 = -(2.0 - c) * f3 + (3.0 -  2.0 * c) * f2 + c * f;
-    vec2 w3 =         c  * f3 -                c * f2;
+			float ld(float depth) {
+				return (2.0 * near) / (far + near - depth * (far - near));
+			}
 
-    vec2 w12 = w1 + w2;
-    vec2 tc12 = rtMetrics.xy * (centerPosition + w2 / w12);
-    vec3 centerColor = texture2D(colorTex, vec2(tc12.x, tc12.y)).rgb;
+			const vec2 hexBokeh[60] = vec2[60] (
+				vec2(  0.2165,  0.1250 ),
+				vec2(  0.0000,  0.2500 ),
+				vec2( -0.2165,  0.1250 ),
+				vec2( -0.2165, -0.1250 ),
+				vec2( -0.0000, -0.2500 ),
+				vec2(  0.2165, -0.1250 ),
+				vec2(  0.4330,  0.2500 ),
+				vec2(  0.0000,  0.5000 ),
+				vec2( -0.4330,  0.2500 ),
+				vec2( -0.4330, -0.2500 ),
+				vec2( -0.0000, -0.5000 ),
+				vec2(  0.4330, -0.2500 ),
+				vec2(  0.6495,  0.3750 ),
+				vec2(  0.0000,  0.7500 ),
+				vec2( -0.6495,  0.3750 ),
+				vec2( -0.6495, -0.3750 ),
+				vec2( -0.0000, -0.7500 ),
+				vec2(  0.6495, -0.3750 ),
+				vec2(  0.8660,  0.5000 ),
+				vec2(  0.0000,  1.0000 ),
+				vec2( -0.8660,  0.5000 ),
+				vec2( -0.8660, -0.5000 ),
+				vec2( -0.0000, -1.0000 ),
+				vec2(  0.8660, -0.5000 ),
+				vec2(  0.2163,  0.3754 ),
+				vec2( -0.2170,  0.3750 ),
+				vec2( -0.4333, -0.0004 ),
+				vec2( -0.2163, -0.3754 ),
+				vec2(  0.2170, -0.3750 ),
+				vec2(  0.4333,  0.0004 ),
+				vec2(  0.4328,  0.5004 ),
+				vec2( -0.2170,  0.6250 ),
+				vec2( -0.6498,  0.1246 ),
+				vec2( -0.4328, -0.5004 ),
+				vec2(  0.2170, -0.6250 ),
+				vec2(  0.6498, -0.1246 ),
+				vec2(  0.6493,  0.6254 ),
+				vec2( -0.2170,  0.8750 ),
+				vec2( -0.8663,  0.2496 ),
+				vec2( -0.6493, -0.6254 ),
+				vec2(  0.2170, -0.8750 ),
+				vec2(  0.8663, -0.2496 ),
+				vec2(  0.2160,  0.6259 ),
+				vec2( -0.4340,  0.5000 ),
+				vec2( -0.6500, -0.1259 ),
+				vec2( -0.2160, -0.6259 ),
+				vec2(  0.4340, -0.5000 ),
+				vec2(  0.6500,  0.1259 ),
+				vec2(  0.4325,  0.7509 ),
+				vec2( -0.4340,  0.7500 ),
+				vec2( -0.8665, -0.0009 ),
+				vec2( -0.4325, -0.7509 ),
+				vec2(  0.4340, -0.7500 ),
+				vec2(  0.8665,  0.0009 ),
+				vec2(  0.2158,  0.8763 ),
+				vec2( -0.6510,  0.6250 ),
+				vec2( -0.8668, -0.2513 ),
+				vec2( -0.2158, -0.8763 ),
+				vec2(  0.6510, -0.6250 ),
+				vec2(  0.8668,  0.2513 )
+			);
 
-    vec2 tc0 = rtMetrics.xy * (centerPosition - 1.0);
-    vec2 tc3 = rtMetrics.xy * (centerPosition + 2.0);
-    vec4 color = vec4(texture2D(colorTex, vec2(tc12.x, tc0.y )).rgb, 1.0) * (w12.x * w0.y ) +
-                   vec4(texture2D(colorTex, vec2(tc0.x,  tc12.y)).rgb, 1.0) * (w0.x  * w12.y) +
-                   vec4(centerColor,                                      1.0) * (w12.x * w12.y) +
-                   vec4(texture2D(colorTex, vec2(tc3.x,  tc12.y)).rgb, 1.0) * (w3.x  * w12.y) +
-                   vec4(texture2D(colorTex, vec2(tc12.x, tc3.y )).rgb, 1.0) * (w12.x * w3.y );
-	return color.rgb/color.a;
+			vec3 calcDof(vec3 color, float depth0, float depth1){
+				float pw = 1.0/ viewWidth;
+				float z = ld(depth0)*far;
+				float focus = ld(texture2D(depthtex2, vec2(0.5)).r)*far;
+				float pcoc = min(abs(aperture * (focal * (z - focus)) / (z * (focus - focal)))*sizemult,pw*15.0);
 
-}
-#endif
+				#ifdef Distance_Blur
+					float getdist = 1-(exp(-pow(ld(depth1)/Dof_Distance_View*far,4.0)*4.0));
+					if(depth1 < 1.0-near/far/far)pcoc = getdist*pw*20.0;
+				#endif
 
-vec3 calcTAA(){
-	//reproject previous frame
-	vec3 closestToCamera = vec3(texcoord,texture2D(depthtex0,texcoord).x);
-	vec3 fragposition = toScreenSpace(closestToCamera);
-		 fragposition = mat3(gbufferModelViewInverse) * fragposition + gbufferModelViewInverse[3].xyz + (cameraPosition - previousCameraPosition);
-	vec3 previousPosition = mat3(gbufferPreviousModelView) * fragposition + gbufferPreviousModelView[3].xyz;
-		 previousPosition = toClipSpace3Prev(previousPosition);
-		 previousPosition.xy = texcoord + (previousPosition.xy - closestToCamera.xy);
+				for ( int i = 0; i < 9; i++) {
+					color += texture2D(texture, texcoord.xy + hexBokeh[i]*pcoc*vec2(1.0,aspectRatio)).rgb;
+				}
+				
+				return color*0.11; //*0.11 = / 9
+			}
+		#endif
 
-	//to reduce error propagation caused by interpolation during history resampling, we will introduce back some aliasing in motion
-	vec2 d = 0.5-abs(fract(previousPosition.xy*vec2(viewWidth,viewHeight)-texcoord*vec2(viewWidth,viewHeight))-0.5);
-	float rej = dot(d,d)*MOTION_REJECTION;
-	//reject history if off-screen and early exit
-	if (previousPosition.x < 0.0 || previousPosition.y < 0.0 || previousPosition.x > 1.0 || previousPosition.y > 1.0) return texture2D(colortex0, texcoord).rgb;
+		void main() {
+			vec4 tex = texture2D(texture, texcoord.xy)*color;
 
-	//Samples current frame 3x3 neighboorhood
-	vec3 albedoCurrent0 = texture2D(colortex0, texcoord).rgb;
-  	vec3 albedoCurrent1 = texture2D(colortex0, texcoord + vec2(texelSize.x,texelSize.y)).rgb;
-	vec3 albedoCurrent2 = texture2D(colortex0, texcoord + vec2(texelSize.x,-texelSize.y)).rgb;
-	vec3 albedoCurrent3 = texture2D(colortex0, texcoord + vec2(-texelSize.x,-texelSize.y)).rgb;
-	vec3 albedoCurrent4 = texture2D(colortex0, texcoord + vec2(-texelSize.x,texelSize.y)).rgb;
-	vec3 albedoCurrent5 = texture2D(colortex0, texcoord + vec2(0.0,texelSize.y)).rgb;
-	vec3 albedoCurrent6 = texture2D(colortex0, texcoord + vec2(0.0,-texelSize.y)).rgb;
-	vec3 albedoCurrent7 = texture2D(colortex0, texcoord + vec2(-texelSize.x,0.0)).rgb;
-	vec3 albedoCurrent8 = texture2D(colortex0, texcoord + vec2(texelSize.x,0.0)).rgb;
+			#ifdef Depth_of_Field
+				float depth0 = texture2D(depthtex0, texcoord.xy).x;
+				float depth1 = texture2D(depthtex1, texcoord.xy).x;
+				float depth2 = texture2D(depthtex2, texcoord.xy).x;
+				bool hand = depth0 < depth2;
+				if(depth0 < depth1 || !hand){
+						tex.rgb = calcDof(tex.rgb, depth0, depth1);
+				}
+			#endif
 
-	#ifdef Adaptive_sharpening
-    vec3 m1 = (albedoCurrent0 + albedoCurrent1 + albedoCurrent2 + albedoCurrent3 + albedoCurrent4 + albedoCurrent5 + albedoCurrent6 + albedoCurrent7 + albedoCurrent8)/9.0;
-    vec3 std = abs(albedoCurrent0 - m1) + abs(albedoCurrent1 - m1) + abs(albedoCurrent2 - m1) + abs(albedoCurrent3 - m1) + abs(albedoCurrent3 - m1) + 
-			   abs(albedoCurrent4 - m1) + abs(albedoCurrent5 - m1) + abs(albedoCurrent6 - m1) + abs(albedoCurrent7 - m1) + abs(albedoCurrent8 - m1);
+			gl_FragData[0] = tex;
 
-    float contrast = 1.0 - dot(std,vec3(0.299, 0.587, 0.114))/9.0;
-    albedoCurrent0 = albedoCurrent0*(1.0+AS_sharpening*contrast)-(albedoCurrent5+albedoCurrent6+albedoCurrent7+albedoCurrent8+(albedoCurrent1 + albedoCurrent2 + albedoCurrent3 + albedoCurrent4)/2.0)/6.0*AS_sharpening*contrast;
+		}
 	#endif
 
-	//Assuming the history color is a blend of the 3x3 neighborhood, we clamp the history to the min and max of each channel in the 3x3 neighborhood
-	vec3 cMax = max(max(max(albedoCurrent0,albedoCurrent1),albedoCurrent2),max(albedoCurrent3,max(albedoCurrent4,max(albedoCurrent5,max(albedoCurrent6,max(albedoCurrent7,albedoCurrent8))))));
-	vec3 cMin = min(min(min(albedoCurrent0,albedoCurrent1),albedoCurrent2),min(albedoCurrent3,min(albedoCurrent4,min(albedoCurrent5,min(albedoCurrent6,min(albedoCurrent7,albedoCurrent8))))));
+	#ifdef Nether
+		//////////////////////////////////////////////////////////////////////////////////
+		/////////DOF File, Credit to Sildur for dof base./////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////
 
-#if TAA_quality == 2
-	vec3 albedoPrev = FastCatmulRom(colortex3, previousPosition.xy,vec4(texelSize, 1.0/texelSize), 0.82).xyz;
-#elif TAA_quality == 1
-	vec3 albedoPrev = texture2D(colortex3, previousPosition.xy).rgb;
-#endif	
+		// #define NDepth_of_Field	//Simulates eye focusing on objects. Low performance impact
+			#define NDistance_Blur	//Requires Depth of Field to be enabled. Replaces eye focusing effect with distance being blurred instead.
+			#define NDoF_Strength 50.0	//[50.0  55.0  60.0  65.0  70.0  75.0  80.0  85.0  90.0  95.0  100.0  105.0  110.0  115.0  120.0  125.0  130.0  135.0  140.0  145.0  150.0]
+			#define NDof_Distance_View 128	//[128 192 256 320 384 448 512]
+			#define NDOF_FOCAL 0.011 //[0.010 0.011 0.012 0.013 0.014 0.015 0.016 0.017 0.018 0.019 0.020 0.021 0.022 0.023 0.024 0.025 0.026 0.027 0.028 0.029 0.030 0.031 0.032 0.033 0.034 0.035 0.036 0.037 0.038 0.039 0.040 0.041 0.042 0.043 0.044 0.045 0.046 0.047 0.048 0.049 0.050 0.051 0.052 0.053 0.054 0.055 0.056 0.057 0.058 0.059 0.060 0.061 0.062 0.063 0.064 0.065 0.066 0.067 0.068 0.069 0.070 0.071 0.072 0.073 0.074 0.075 0.076 0.077 0.078 0.079 0.080 0.081 0.082 0.083 0.084 0.085 0.086 0.087 0.088 0.089 0.090 0.091 0.092 0.093 0.094 0.095 0.096 0.097 0.098 0.099 0.100]
 
-	vec3 finalcAcc = clamp(albedoPrev,cMin,cMax);
+		varying vec2 texcoord;
+		varying vec4 color;
+		uniform sampler2D texture;
 
-	//increases blending factor if history is far away from aabb, reduces ghosting at the cost of some flickering
-	float luma = dot(albedoPrev,vec3(0.21, 0.72, 0.07));
-	float isclamped = distance(albedoPrev,finalcAcc)/luma;
+		#ifdef NDepth_of_Field
 
-	//reduces blending factor if current texel is far from history, reduces flickering
-	float lumDiff2 = distance(albedoPrev,albedoCurrent0)/luma;
-	lumDiff2 = 1.0-clamp(lumDiff2*lumDiff2,0.0,1.0)*FLICKER_REDUCTION;
+			uniform sampler2D depthtex0;	//everything
+			uniform sampler2D depthtex1;	//everything but transparency
+			uniform sampler2D depthtex2;	//everything but transparency+hand
+			uniform float near;
+			uniform float far;
+			uniform float aspectRatio;
+			uniform float viewWidth;
+			uniform float rainStrength;
+			uniform vec3 cameraPosition;
+			uniform vec3 previousCameraPosition;
+			uniform mat4 gbufferProjectionInverse;
+			uniform mat4 gbufferPreviousProjection;
+			uniform mat4 gbufferModelViewInverse;
+			uniform mat4 gbufferPreviousModelView;
 
-	//Blend current pixel with clamped history
-	return mix(finalcAcc,albedoCurrent0,clamp(BLEND_FACTOR*lumDiff2+rej+isclamped*ANTI_GHOSTING+0.01,0.0,1.0));
-}
+
+			//Dof constant values
+			const float focal = NDOF_FOCAL;
+			float aperture = 0.008;
+			const float sizemult = NDoF_Strength;
+
+			float ld(float depth) {
+				return (2.0 * near) / (far + near - depth * (far - near));
+			}
+
+			const vec2 hexBokeh[60] = vec2[60] (
+				vec2(  0.2165,  0.1250 ),
+				vec2(  0.0000,  0.2500 ),
+				vec2( -0.2165,  0.1250 ),
+				vec2( -0.2165, -0.1250 ),
+				vec2( -0.0000, -0.2500 ),
+				vec2(  0.2165, -0.1250 ),
+				vec2(  0.4330,  0.2500 ),
+				vec2(  0.0000,  0.5000 ),
+				vec2( -0.4330,  0.2500 ),
+				vec2( -0.4330, -0.2500 ),
+				vec2( -0.0000, -0.5000 ),
+				vec2(  0.4330, -0.2500 ),
+				vec2(  0.6495,  0.3750 ),
+				vec2(  0.0000,  0.7500 ),
+				vec2( -0.6495,  0.3750 ),
+				vec2( -0.6495, -0.3750 ),
+				vec2( -0.0000, -0.7500 ),
+				vec2(  0.6495, -0.3750 ),
+				vec2(  0.8660,  0.5000 ),
+				vec2(  0.0000,  1.0000 ),
+				vec2( -0.8660,  0.5000 ),
+				vec2( -0.8660, -0.5000 ),
+				vec2( -0.0000, -1.0000 ),
+				vec2(  0.8660, -0.5000 ),
+				vec2(  0.2163,  0.3754 ),
+				vec2( -0.2170,  0.3750 ),
+				vec2( -0.4333, -0.0004 ),
+				vec2( -0.2163, -0.3754 ),
+				vec2(  0.2170, -0.3750 ),
+				vec2(  0.4333,  0.0004 ),
+				vec2(  0.4328,  0.5004 ),
+				vec2( -0.2170,  0.6250 ),
+				vec2( -0.6498,  0.1246 ),
+				vec2( -0.4328, -0.5004 ),
+				vec2(  0.2170, -0.6250 ),
+				vec2(  0.6498, -0.1246 ),
+				vec2(  0.6493,  0.6254 ),
+				vec2( -0.2170,  0.8750 ),
+				vec2( -0.8663,  0.2496 ),
+				vec2( -0.6493, -0.6254 ),
+				vec2(  0.2170, -0.8750 ),
+				vec2(  0.8663, -0.2496 ),
+				vec2(  0.2160,  0.6259 ),
+				vec2( -0.4340,  0.5000 ),
+				vec2( -0.6500, -0.1259 ),
+				vec2( -0.2160, -0.6259 ),
+				vec2(  0.4340, -0.5000 ),
+				vec2(  0.6500,  0.1259 ),
+				vec2(  0.4325,  0.7509 ),
+				vec2( -0.4340,  0.7500 ),
+				vec2( -0.8665, -0.0009 ),
+				vec2( -0.4325, -0.7509 ),
+				vec2(  0.4340, -0.7500 ),
+				vec2(  0.8665,  0.0009 ),
+				vec2(  0.2158,  0.8763 ),
+				vec2( -0.6510,  0.6250 ),
+				vec2( -0.8668, -0.2513 ),
+				vec2( -0.2158, -0.8763 ),
+				vec2(  0.6510, -0.6250 ),
+				vec2(  0.8668,  0.2513 )
+			);
+
+			vec3 calcDof(vec3 color, float depth0, float depth1){
+				float pw = 1.0/ viewWidth;
+				float z = ld(depth0)*far;
+				float focus = ld(texture2D(depthtex2, vec2(0.5)).r)*far;
+				float pcoc = min(abs(aperture * (focal * (z - focus)) / (z * (focus - focal)))*sizemult,pw*15.0);
+
+				#ifdef NDistance_Blur
+					float getdist = 1-(exp(-pow(ld(depth1)/NDof_Distance_View*far,4.0)*4.0));
+					if(depth1 < 1.0-near/far/far)pcoc = getdist*pw*20.0;
+				#endif
+
+				for ( int i = 0; i < 9; i++) {
+					color += texture2D(texture, texcoord.xy + hexBokeh[i]*pcoc*vec2(1.0,aspectRatio)).rgb;
+				}
+				
+				return color*0.11; //*0.11 = / 9
+			}
+		#endif
+
+		void main() {
+			vec4 tex = texture2D(texture, texcoord.xy)*color;
+
+			#ifdef NDepth_of_Field
+				float depth0 = texture2D(depthtex0, texcoord.xy).x;
+				float depth1 = texture2D(depthtex1, texcoord.xy).x;
+				float depth2 = texture2D(depthtex2, texcoord.xy).x;
+				bool hand = depth0 < depth2;
+				if(depth0 < depth1 || !hand){
+						tex.rgb = calcDof(tex.rgb, depth0, depth1);
+				}
+			#endif
+
+			gl_FragData[0] = tex;
+
+		}
+	#endif
 #endif
-
-void main() {
-
-#ifdef TAA
-	gl_FragData[0] = vec4(calcTAA(), 1.0);
-#else
-	gl_FragData[0] = texture2D(colortex0, texcoord);	//if TAA is disabled just passthrough data from composite0, previous buffer.
-#endif
-}
 

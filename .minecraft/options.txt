@@ -24,7 +24,7 @@ fov:0.5
 screenEffectScale:1.0
 fovEffectScale:1.0
 gamma:1.0
-renderDistance:18
+renderDistance:12
 entityDistanceScaling:1.0
 guiScale:3
 particles:0
@@ -110,7 +110,6 @@ key_iris.keybind.reload:key.keyboard.r
 key_iris.keybind.toggleShaders:key.keyboard.k
 key_iris.keybind.shaderPackSelection:key.keyboard.o
 key_key.antighost.reveal:key.keyboard.g
-key_key.charm.openCraftingTable:key.keyboard.v
 key_key.mousewheelie.open_config_screen:key.keyboard.unknown
 key_key.mousewheelie.sort_inventory:key.mouse.middle
 key_key.mousewheelie.scroll_up:amecsapi.key.mouse.scroll.up

@@ -129,7 +129,7 @@
 
 #define MC_GL_ARB_texture_barrier
 
-#define MC_VERSION 10710 Definitive Edition
+#define MC_VERSION 11701
 
 #define MC_GL_ARB_buffer_storage
 
@@ -847,13 +847,10 @@ vec4 shadow2DLod(sampler2DShadow sampler, vec3 coord, float lod) { return vec4(t
 #define MC_RENDER_QUALITY 1.0
 #define MC_SHADOW_QUALITY 1.0
 
-varying vec4 color;
+varying vec4 starData; //rgb = star color, a = flag for weather or not this pixel is a star.
 
 void main() {
 	gl_Position = ftransform();
-	
-	gl_FogFragCoord = gl_Position.z;
-
-	color = gl_Color;
+	starData = vec4(gl_Color.rgb, float(gl_Color.r == gl_Color.g && gl_Color.g == gl_Color.b && gl_Color.r > 0.0));
 }
 
