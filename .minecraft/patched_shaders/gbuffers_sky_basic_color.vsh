@@ -847,10 +847,13 @@ vec4 shadow2DLod(sampler2DShadow sampler, vec3 coord, float lod) { return vec4(t
 #define MC_RENDER_QUALITY 1.0
 #define MC_SHADOW_QUALITY 1.0
 
-varying vec4 starData; //rgb = star color, a = flag for weather or not this pixel is a star.
+varying vec4 color;
 
 void main() {
 	gl_Position = ftransform();
-	starData = vec4(gl_Color.rgb, float(gl_Color.r == gl_Color.g && gl_Color.g == gl_Color.b && gl_Color.r > 0.0));
+	
+	gl_FogFragCoord = gl_Position.z;
+
+	color = gl_Color;
 }
 

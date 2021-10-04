@@ -849,126 +849,335 @@ vec4 shadow2D(sampler2DShadow sampler, vec3 coord) { return vec4(texture(sampler
 vec4 shadow2DLod(sampler2DShadow sampler, vec3 coord, float lod) { return vec4(textureLod(sampler, coord, lod)); }
 #define MC_RENDER_QUALITY 1.0
 #define MC_SHADOW_QUALITY 1.0
+/*
+Sildur's enhanced default, before editing, remember the agreement you've accepted by downloading this shaderpack:
+http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1291396-1-6-4-1-12-1-sildurs-shaders-pc-mac-intel
 
-#define wavingFoliage
-	#define wavingSpeed 0.40//[0.05 0.10 0.15 0.20 0.25 0.30 0.35 0.40 0.45 0.50 0.55 0.60 0.65 0.70 0.75]
+You are allowed to:
+- Modify it for your own personal use only, so don't share it online.
 
-#define wavingLeaves //This option can cause performance hits in large forests.
+You are not allowed to:
+- Rename and/or modify this shaderpack and upload it with your own name on it.
+- Provide mirrors by reuploading my shaderpack, if you want to link it, use the link to my thread found above.
+- Copy and paste code or even whole files into your "own" shaderpack.
+*/
+/*--------------------
+//ADJUSTABLE VARIABLES//
+---------------------*/
+#define animationSpeed 1.0  //[0.25 0.5 0.75 1.0 1.25 1.5 1.75 2.0]
+#define Waving_Leaves
+#define Waving_Vines
+#define Waving_Grass
+#define Waving_Entities			//Includes: Saplings, small flowers, wheat, carrots, potatoes and beetroot.
+#define Waving_Tallgrass
+#define Waving_Fire
+#define Waving_Lava
+#define Waving_Water
+#define Waving_Lanterns
+#define waves_amplitude 0.65    //[0.55 0.65 0.75 0.85 0.95 1.05 1.15 1.25 1.35 1.45 1.55 1.65 1.75 1.85 1.95 2.05]
 
-varying vec2 lmcoord;
+//Reflections
+#define Reflections				//also adjust in fragment aswell as composite.fsh
+#define WaterReflection
+#define TransparentReflections	//see block.properties, transparent blocks are assigned to ice (79)
+
+#define Shadows
+#define SHADOW_MAP_BIAS 0.80
+
+#define nMap 0					//[0 1 2]0=Off 1=Bumpmapping, 2=Parallax,
+
+//#define TAA
+/*---------------------------
+//END OF ADJUSTABLE VARIABLES//
+----------------------------*/
+
+//Moving entities IDs
+//See block.properties for mapped ids
+#define ENTITY_SMALLGRASS   10031.0	//
+#define ENTITY_LOWERGRASS   10175.0	//lower half only in 1.13+
+#define ENTITY_UPPERGRASS	10176.0 //upper half only used in 1.13+
+#define ENTITY_SMALLENTS    10059.0	//sapplings(6), dandelion(37), rose(38), carrots(141), potatoes(142), beetroot(207)
+
+#define ENTITY_LEAVES       10018.0	//161 new leaves
+#define ENTITY_VINES        10106.0
+
+#define ENTITY_WATER		10008.0	//9
+#define ENTITY_LILYPAD      10111.0	//
+#define ENTITY_ICE			10079.0	//transparent reflections, stained glass(95, 160), slimeblock(165)
+
+#define ENTITY_FIRE         10051.0	//
+#define ENTITY_LAVA   		10010.0	//11
+#define ENTITY_EMISSIVE		10089.0 //emissive blocks defined in block.properties
+#define ENTITY_WAVING_LANTERN 10090.0
+
+varying vec4 color;
+varying vec3 getShadowpos;
+varying vec3 vworldpos;
+varying mat3 tbnMatrix;
 varying vec2 texcoord;
-varying vec4 glcolor;
+varying vec2 lmcoord;
+varying float NdotL;
+varying float iswater;
+varying float mat;
 
-#ifdef wavingFoliage
-	attribute vec3 mc_Entity;
-	attribute vec2 mc_midTexCoord;
+attribute vec4 mc_Entity;
+attribute vec4 mc_midTexCoord;
+attribute vec4 at_tangent;                      //xyz = tangent vector, w = handedness, added in 1.7.10
 
-	uniform int worldTime;
+uniform vec3 shadowLightPosition; //this is sun and moon position in eye space, so no need for a day-night switch. Added in 1.8?
+uniform vec3 cameraPosition;
+uniform mat4 gbufferModelView;
+uniform mat4 gbufferModelViewInverse;
+uniform mat4 shadowProjection;
+uniform mat4 shadowModelView;
 
-	uniform float rainStrength;
-	uniform float wetness; 
-	uniform float night;
-	uniform sampler2D noisetex;
-	uniform float frameTimeCounter;
-	uniform mat4 gbufferModelView;
-	uniform mat4 gbufferModelViewInverse;
-	uniform vec3 cameraPosition;
+//moving stuff
+uniform float frameTimeCounter;
+const float PI = 3.14;
+float pi2wt = (150.79*frameTimeCounter) * animationSpeed;
 
-	const int noiseTextureResolution = 64;
-	const float invNoiseRes = 1.0 / float(noiseTextureResolution);
+vec3 calcWave(in vec3 pos, in float fm, in float mm, in float ma, in float f0, in float f1, in float f2, in float f3, in float f4, in float f5) {
+	float magnitude = sin(pi2wt*fm + dot(pos, vec3(0.5))) * mm + ma;
+	vec3 d012 = sin(vec3(f0, f1, f2)*pi2wt);
+	
+    vec3 ret;
+		 ret.x = pi2wt*f3 + d012.x + d012.y - pos.x + pos.z + pos.y;
+		 ret.z = pi2wt*f4 + d012.y + d012.z + pos.x - pos.z + pos.y;
+		 ret.y = pi2wt*f5 + d012.z + d012.x + pos.z + pos.y - pos.y;
+		 ret = sin(ret)*magnitude;
+	
+    return ret;
+}
 
-	float lengthSquared2(vec2 v) { return dot(v, v); }
+vec3 calcMove(in vec3 pos, in float f0, in float f1, in float f2, in float f3, in float f4, in float f5, in vec3 amp1, in vec3 amp2) {
+    vec3 move1 = calcWave(pos      , 0.0027, 0.0400, 0.0400, 0.0127, 0.0089, 0.0114, 0.0063, 0.0224, 0.0015) * amp1;
+	vec3 move2 = calcWave(pos+move1, 0.0348, 0.0400, 0.0400, f0, f1, f2, f3, f4, f5) * amp2;
+    return move1+move2;
+}/*---*/
 
-	float approxScaledCos(float x) { //x from 0 to 1, y from -1 to 1
-		x = abs(fract(x) * 2.0 - 1.0);
-		return x * x * (6.0 - 4.0 * x) - 1.0;
-		//x = fract(x);
-		//if (x <= 0.5) return -16.0 * x * x + 8.0 * x;
-		//else return 16.0 * x * x - 24.0 * x + 8.0;
+#ifdef Shadows
+#define diagonal3(mat) vec3((mat)[0].x, (mat)[1].y, (mat)[2].z)
+vec3 calcShadows(in vec3 shadowpos, in vec3 norm){
+	shadowpos = mat3(shadowModelView) * shadowpos + shadowModelView[3].xyz;
+	shadowpos = diagonal3(shadowProjection) * shadowpos + shadowProjection[3].xyz;
+
+	float distortion = ((1.0 - SHADOW_MAP_BIAS) + length(shadowpos.xy * 1.25) * SHADOW_MAP_BIAS) * 0.85;
+	shadowpos.xy /= distortion;
+	
+	NdotL = clamp(dot(norm, normalize(shadowLightPosition))*1.02-0.02,0.0,1.0);	
+	float bias = distortion*distortion*(0.0046*tan(acos(NdotL)));
+	
+	//Certain things shouldn't be diffused, also adjust bias for cheap self shadowing fix
+	if (mc_Entity.x == ENTITY_SMALLGRASS
+	|| mc_Entity.x == ENTITY_LOWERGRASS
+	|| mc_Entity.x == ENTITY_UPPERGRASS
+	|| mc_Entity.x == ENTITY_SMALLENTS
+	|| mc_Entity.x == ENTITY_LEAVES
+	|| mc_Entity.x == ENTITY_VINES
+	|| mc_Entity.x == ENTITY_LILYPAD
+	|| mc_Entity.x == ENTITY_FIRE
+	|| mc_Entity.x == ENTITY_WAVING_LANTERN	
+	|| mc_Entity.x == ENTITY_EMISSIVE	
+	|| mc_Entity.x == 10030.0	//cobweb	
+	|| mc_Entity.x == 10115.0 //nether wart
+	|| mc_Entity.x == 10006.0) {
+		NdotL = 0.75;
+		bias = 0.0010;
 	}
+	shadowpos.xyz = shadowpos.xyz * 0.5 + 0.5;
+	shadowpos.z -= bias;
 
-	vec3 windOffset(vec3 pos, float multiplier, float speed) {
-		float baseWindAmt = min(rainStrength, wetness) * 1.5 + (pos.y / 192.0 + 0.66666666) * (1.0 - night * 0.5); //1.0x at y=64, 2.0x at y=256, and rain increases this to 2.5x at y=64 and 3.5x at y=256. Rain also increases it by 1.5x, and night decreases it to 0.5x.
-		vec3 waveStart = texture2D(noisetex, vec2(pos.x + frameTimeCounter, pos.z) * 0.375 * invNoiseRes).rgb; //oscillation direction and phase offset
-		float waveMultiplier = texture2D(noisetex, vec2(pos.x * 0.125 + frameTimeCounter * 0.5, pos.z * 0.125) * invNoiseRes).r * 0.5 + 0.5; //multiplier to add variety
-		vec2 offset = vec2(waveStart.y * 0.4 - 0.2, waveStart.z * 0.2 - 0.1) * approxScaledCos(waveStart.x + frameTimeCounter * speed) * waveMultiplier; //combine to get position offset
-		offset.x -= baseWindAmt * 0.01 + 0.02; //biased towards east wind
-		offset *= multiplier * baseWindAmt; //scale offset
-		return vec3(offset.x, 0.5 / (lengthSquared2(offset) + 0.5) - 1.0, offset.y); //move vertexes down some based on how much they were offset
-	}
+	return shadowpos.xyz;
+}
+#endif
+
+#if nMap == 2
+varying float dist;
+varying vec3 viewVector;
+varying vec4 vtexcoordam; // .st for add, .pq for mul
+varying vec2 vtexcoord;
+varying float isblock; 	//mc_Entity.x, hack to only apply pom to blocks
+#endif
+
+#ifdef TAA
+uniform float viewWidth;
+uniform float viewHeight;
+vec2 texelSize = vec2(1.0/viewWidth,1.0/viewHeight);
+uniform int framemod8;
+const vec2[8] offsets = vec2[8](vec2(1./8.,-3./8.),
+								vec2(-1.,3.)/8.,
+								vec2(5.0,1.)/8.,
+								vec2(-3,-5.)/8.,
+								vec2(-5.,5.)/8.,
+								vec2(-7.,-1.)/8.,
+								vec2(3,7.)/8.,
+								vec2(7.,-7.)/8.);
 #endif
 
 void main() {
 
-	bool isGrass = false;
-
-	gl_Position = ftransform();
+	//Positioning
 	texcoord = (iris_TextureMat * gl_MultiTexCoord0).xy;
-	lmcoord  = (iris_LightmapTextureMatrix * gl_MultiTexCoord1).xy;
+	lmcoord = (iris_LightmapTextureMatrix * gl_MultiTexCoord1).xy;	
+	vec3 position = mat3(gbufferModelViewInverse) * (gl_ModelViewMatrix * gl_Vertex).xyz + gbufferModelViewInverse[3].xyz;
 
-#ifdef wavingFoliage
-	vec4 pos = gbufferModelViewInverse * (gl_ModelViewMatrix * gl_Vertex); //chunk coords -> world coords
+	vworldpos = position.xyz + cameraPosition;
+	bool istopv = gl_MultiTexCoord0.t < mc_midTexCoord.t;
+
+#ifdef Waving_Tallgrass
+if (mc_Entity.x == ENTITY_LOWERGRASS && istopv || mc_Entity.x == ENTITY_UPPERGRASS)
+			position.xyz += calcMove(vworldpos.xyz,
+			0.0041,
+			0.0070,
+			0.0044,
+			0.0038,
+			0.0240,
+			0.0000,
+			vec3(0.8,0.0,0.8),
+			vec3(0.4,0.0,0.4));
+
+#endif
+if (istopv) {
+#ifdef Waving_Grass
+	if ( mc_Entity.x == ENTITY_SMALLGRASS)
+			position.xyz += calcMove(vworldpos.xyz,
+				0.0041,
+				0.0070,
+				0.0044,
+				0.0038,
+				0.0063,
+				0.0000,
+				vec3(3.0,1.6,3.0),
+				vec3(0.0,0.0,0.0));
+#endif
+#ifdef Waving_Entities
+	if (mc_Entity.x == ENTITY_SMALLENTS)
+			position.xyz += calcMove(vworldpos.xyz,
+			0.0041,
+			0.0070,
+			0.0044,
+			0.0038,
+			0.0240,
+			0.0000,
+			vec3(0.8,0.0,0.8),
+			vec3(0.4,0.0,0.4));
+#endif
+#ifdef Waving_Fire
+	if ( mc_Entity.x == ENTITY_FIRE)
+			position.xyz += calcMove(vworldpos.xyz,
+			0.0105,
+			0.0096,
+			0.0087,
+			0.0063,
+			0.0097,
+			0.0156,
+			vec3(1.2,0.4,1.2),
+			vec3(0.8,0.8,0.8));
+#endif
+}
+
+#ifdef Waving_Leaves
+	if ( mc_Entity.x == ENTITY_LEAVES)
+			position.xyz += calcMove(vworldpos.xyz,
+			0.0040,
+			0.0064,
+			0.0043,
+			0.0035,
+			0.0037,
+			0.0041,
+			vec3(1.0,0.2,1.0),
+			vec3(0.5,0.1,0.5));
+#endif
+#ifdef Waving_Vines
+	if ( mc_Entity.x == ENTITY_VINES)
+			position.xyz += calcMove(vworldpos.xyz,
+			0.0040,
+			0.0064,
+			0.0043,
+			0.0035,
+			0.0037,
+			0.0041,
+			vec3(0.5,1.0,0.5),
+			vec3(0.25,0.5,0.25));
+#endif
+#ifdef Waving_Lava
+	if(mc_Entity.x == ENTITY_LAVA){
+		float fy = fract(vworldpos.y + 0.001);
+		float wave = 0.05 * sin(2 * PI * (frameTimeCounter*0.2 + vworldpos.x /  7.0 + vworldpos.z / 13.0))
+				   + 0.05 * sin(2 * PI * (frameTimeCounter*0.15 + vworldpos.x / 11.0 + vworldpos.z /  5.0));
+		position.y += clamp(wave, -fy, 1.0-fy)*0.5;
+	}
+#endif
+	iswater = 0.0;
+	if(mc_Entity.x == ENTITY_WATER)iswater = 0.95;	//don't fully remove shadows on water plane
+#ifdef Waving_Water
+	if(mc_Entity.x == ENTITY_WATER || mc_Entity.x == ENTITY_LILYPAD) { //water, lilypads
+		float fy = fract(vworldpos.y + 0.001);
+		float wave = 0.05 * sin(2 * PI * (frameTimeCounter*0.8 + vworldpos.x /  2.5 + vworldpos.z / 5.0))
+				   + 0.05 * sin(2 * PI * (frameTimeCounter*0.6 + vworldpos.x / 6.0 + vworldpos.z /  12.0));
+		position.y += clamp(wave, -fy, 1.0-fy)*waves_amplitude;
+	}
 #endif
 
-	glcolor = gl_Color;
-		#ifdef wavingFoliage
-
-			vec3 normal;
-		if (mc_Entity.x > 10000.0) {
-			int id = int(mc_Entity.x) - 10000;
-			if (id == 1) { //grass blocks and dirt
-				normal = gl_NormalMatrix * gl_Normal;
-			}
-			else if (id == 2) { //tallgrass and other plants
-				normal = gl_NormalMatrix[1];
-
-				float amt = float(texcoord.y < mc_midTexCoord.y);
-
-				if (amt > 0.1) { //will always either be 0.0 or 1.0
-					pos.xyz += windOffset(pos.xyz + cameraPosition, amt * 1.0, wavingSpeed);
-				}
-		}
-
-		else if (id == 13) { //leaves
-			normal = gl_NormalMatrix * gl_Normal;
-			
-			#ifdef wavingLeaves
-				pos.xyz += windOffset(pos.xyz + cameraPosition, 1.0, wavingSpeed);
-			#endif
-		}
-
-		else if (id == 3 || id == 4) { //double plants
-			normal = gl_NormalMatrix[1];
-
-
-				float amt = (float(texcoord.y < mc_midTexCoord.y) + float(id == 4)) * 0.5;
-
-					//windSpeed = 0.5;
-					amt *= 1.5;
-
-					if (amt > 0.1) { //will always either be 0.0, 0.5 or 1.0
-						pos.xyz += windOffset(pos.xyz + cameraPosition, amt * 1.0, wavingSpeed);
-					}
-		}
-		else if (id == 5) { //crops
-			normal = gl_NormalMatrix[1];
-
-				if (texcoord.y < mc_midTexCoord.y) {
-					pos.xyz += windOffset(pos.xyz + cameraPosition, 1.0, wavingSpeed);
-				}
-			}
-			else if (id == 6) { //sugar cane and other arbitrarily-tall plants
-				normal = gl_NormalMatrix[1];
-			}
-			else if (id == 7) { //cobwebs and other stuff that shouldn't have shadows
-				normal = gl_NormalMatrix[1];
-			}
-			else if (id == 13011) {
-				normal = gl_NormalMatrix[1];
-			}
-
-				gl_Position = gl_ProjectionMatrix * (gbufferModelView * pos);
+#ifdef Waving_Lanterns
+	if(mc_Entity.x == ENTITY_WAVING_LANTERN){
+		vec3 fxyz = fract(vworldpos.xyz + 0.001);
+		float wave = 0.025 * sin(2 * PI * (frameTimeCounter*0.4 + vworldpos.x * 0.5 + vworldpos.z * 0.5));
+					//+ 0.025 * sin(2 * PI * (frameTimeCounter*0.4 + worldpos.y *0.25 + worldpos.z *0.25));
+		float waveY = 0.05 * cos(frameTimeCounter*2.0 + vworldpos.y);
+		position.x -= clamp(wave, -fxyz.x, 1.0-fxyz.x);
+		position.y += clamp(waveY*0.25, -fxyz.y, 1.0-fxyz.y)+0.015;		
+		position.z += clamp(wave*0.45, -fxyz.z, 1.0-fxyz.z);
 	}
-		#endif
+#endif
+
+mat = 0.0;
+#ifdef Reflections
+#ifdef WaterReflection
+	if(mc_Entity.x == ENTITY_WATER)mat = 1.0;
+#endif
+#ifdef TransparentReflections
+	if(mc_Entity.x == ENTITY_ICE)mat = 2.0; //various ids are mapped to ice in block.properties
+#endif
+#endif
+
+	gl_Position = gl_ProjectionMatrix * gbufferModelView * vec4(position, 1.0);
+
+#ifdef TAA
+	gl_Position.xy += offsets[framemod8] * gl_Position.w*texelSize;
+#endif
+
+	//Fog
+	gl_FogFragCoord = length(position.xyz);
+
+	color = gl_Color;
+
+	//Fix colors on emissive blocks
+	if(mc_Entity.x == ENTITY_EMISSIVE || mc_Entity.x == ENTITY_LAVA || mc_Entity.x == ENTITY_FIRE ||  mc_Entity.x == ENTITY_WAVING_LANTERN || mc_Entity.x == 10300.0)color = vec4(1.0);
+
+	//Bump & Parallax mapping
+	vec3 normal = normalize(gl_NormalMatrix * gl_Normal);	
+	vec3 tangent = normalize(gl_NormalMatrix * at_tangent.xyz);
+	vec3 binormal = normalize(gl_NormalMatrix * cross(at_tangent.xyz, gl_Normal.xyz) * at_tangent.w);
+	tbnMatrix = mat3(tangent.x, binormal.x, normal.x,
+					 tangent.y, binormal.y, normal.y,
+					 tangent.z, binormal.z, normal.z);
+
+#if nMap == 2
+	isblock = mc_Entity.x;
+	if(mc_Entity.x == ENTITY_EMISSIVE || mc_Entity.x == 10300.0)isblock = -1.0; //enable bump and parallax mapping for defined ids.	
+	vec2 midcoord = (iris_TextureMat *  mc_midTexCoord).st;
+	vec2 texcoordminusmid = texcoord.xy-midcoord;
+	vtexcoordam.pq  = abs(texcoordminusmid)*2;
+	vtexcoordam.st  = min(texcoord.xy ,midcoord-texcoordminusmid);
+	vtexcoord.xy    = sign(texcoordminusmid)*0.5+0.5;
+	
+	viewVector = tbnMatrix * (mat3(gl_ModelViewMatrix) * gl_Vertex.xyz + gl_ModelViewMatrix[3].xyz);
+	dist = length(gl_ModelViewMatrix * gl_Vertex);
+#endif					 
+	
+#ifdef Shadows
+	getShadowpos = calcShadows(position, normal);
+#endif
 }
 

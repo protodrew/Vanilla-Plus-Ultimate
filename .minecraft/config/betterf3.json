@@ -40,24 +40,6 @@
 				"": true
 			},
 			"enabled": true
-		}, 
-		{
-			"name": "target",
-			"name_color": 43775,
-			"value_color": 16777045,
-			"lines": {
-				"": true,
-				"id_fluid": true,
-				"fluid_tags": true,
-				"block_states": true,
-				"targeted_block": true,
-				"block_tags": true,
-				"id_block": true,
-				"targeted_fluid": true,
-				"targeted_entity": true,
-				"fluid_states": true
-			},
-			"enabled": true
 		}
 	],
 	"modules_left": [
@@ -151,32 +133,6 @@
 				"highest_block": false,
 				"highest_block_server": true,
 				"light_server": true
-			},
-			"enabled": true
-		}, 
-		{
-			"name": "entity",
-			"name_color": 16733525,
-			"value_color": 16777045,
-			"lines": {
-				"entities": true,
-				"water_creature": false,
-				"underground_water_creature": false,
-				"ambient": false,
-				"particles": true,
-				"creature": false,
-				"water_ambient": false,
-				"monster": false,
-				"misc": false
-			},
-			"enabled": true
-		}, 
-		{
-			"name": "miscleft",
-			"name_color": 16645526,
-			"value_color": 5636095,
-			"lines": {
-				"misc_left": true
 			},
 			"enabled": true
 		}

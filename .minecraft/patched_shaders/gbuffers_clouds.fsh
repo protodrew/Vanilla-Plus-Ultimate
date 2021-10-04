@@ -833,29 +833,44 @@ vec4 shadow2D(sampler2DShadow sampler, vec3 coord) { return vec4(texture(sampler
 vec4 shadow2DLod(sampler2DShadow sampler, vec3 coord, float lod) { return vec4(textureLod(sampler, coord, lod)); }
 #define MC_RENDER_QUALITY 1.0
 #define MC_SHADOW_QUALITY 1.0
+/* DRAWBUFFERS:02 */ //0=gcolor, 2=gnormal for normals
+/*
+Sildur's enhanced default, before editing, remember the agreement you've accepted by downloading this shaderpack:
+http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1291396-1-6-4-1-12-1-sildurs-shaders-pc-mac-intel
 
-// #define cloudsCustom
-	#define cloudsRed 185 //[0.0 5.0 10.0 15.0 20.0 25.0 30.0 35.0 40.0 45.0 50.0 55.0 60.0 65.0 70.0 75.0 80.0 85.0 90.0 95.0 100.0 105.0 110.0 115.0 120.0 125.0 130.0 135.0 140.0 145.0 150.0 155.0 160.0 165.0 170.0 175.0 180.0 185.0 190.0 195.0 200.0 205.0 210.0 215.0 220.0 225.0 230.0 235.0 240.0 245.0 250.0 255.0]
-	#define cloudsGreen 195 //[0.0 5.0 10.0 15.0 20.0 25.0 30.0 35.0 40.0 45.0 50.0 55.0 60.0 65.0 70.0 75.0 80.0 85.0 90.0 95.0 100.0 105.0 110.0 115.0 120.0 125.0 130.0 135.0 140.0 145.0 150.0 155.0 160.0 165.0 170.0 175.0 180.0 185.0 190.0 195.0 200.0 205.0 210.0 215.0 220.0 225.0 230.0 235.0 240.0 245.0 250.0 255.0]
-	#define cloudsBlue 210 //[0.0 5.0 10.0 15.0 20.0 25.0 30.0 35.0 40.0 45.0 50.0 55.0 60.0 65.0 70.0 75.0 80.0 85.0 90.0 95.0 100.0 105.0 110.0 115.0 120.0 125.0 130.0 135.0 140.0 145.0 150.0 155.0 160.0 165.0 170.0 175.0 180.0 185.0 190.0 195.0 200.0 205.0 210.0 215.0 220.0 225.0 230.0 235.0 240.0 245.0 250.0 255.0]
-	#define cloudsAlpha 0.75 //[0.00 0.15 0.20 0.25 0.30 0.35 0.40 0.45 0.50 0.55 0.60 0.65 0.70 0.75 0.80 0.85 0.90 0.95 1.00]
+You are allowed to:
+- Modify it for your own personal use only, so don't share it online.
 
+You are not allowed to:
+- Rename and/or modify this shaderpack and upload it with your own name on it.
+- Provide mirrors by reuploading my shaderpack, if you want to link it, use the link to my thread found above.
+- Copy and paste code or even whole files into your "own" shaderpack.
+*/
 
-uniform sampler2D texture;
+#define Fog		//Toggle default fog.
 
 varying vec2 texcoord;
-varying vec4 glcolor;
+varying vec4 color;
+uniform sampler2D texture;
+
+#ifdef Fog
+const int GL_LINEAR = 9729;
+const int GL_EXP = 2048;
+uniform int fogMode;
+#endif
 
 void irisMain() {
-	vec4 color = texture2D(texture, texcoord) * glcolor;
 
+	gl_FragData[0] = texture2D(texture, texcoord.xy)*color;
+	gl_FragData[1] = vec4(0.0); //fill normal buffer with 0.0, improves performance
 
-	#ifdef cloudsCustom
-		color *= vec4(cloudsRed / 255, cloudsGreen / 255 , cloudsBlue / 255, cloudsAlpha);
-	#endif
-
-/* DRAWBUFFERS:0 */
-	gl_FragData[0] = color; //gcolor
+#ifdef Fog
+	if (fogMode == GL_EXP) {
+		gl_FragData[0].rgb = mix(gl_FragData[0].rgb, gl_Fog.color.rgb, 1.0 - clamp(exp(-gl_Fog.density * gl_FogFragCoord), 0.0, 1.0));
+	} else if (fogMode == GL_LINEAR) {
+		gl_FragData[0].rgb = mix(gl_FragData[0].rgb, gl_Fog.color.rgb, clamp((gl_FogFragCoord - gl_Fog.start) * gl_Fog.scale, 0.0, 1.0));
+	}
+#endif	
 }
 
 void main() {
