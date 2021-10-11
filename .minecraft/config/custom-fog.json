@@ -2,10 +2,18 @@
   "defaultConfig": {
     "enabled": true,
     "type": "LINEAR",
-    "linearFogStartMult": 0.25,
+    "linearFogStartMult": 0.32629108,
+    "linearFogEndMult": 0.8803,
+    "expFogMult": 0.29,
+    "exp2FogMult": 0.32
+  },
+  "waterConfig": {
+    "enabled": false,
+    "type": "EXPONENTIAL",
+    "linearFogStartMult": 0.507,
     "linearFogEndMult": 1.0,
-    "expFogMult": 3.0,
-    "exp2FogMult": 1.75
+    "expFogMult": 0.51,
+    "exp2FogMult": 0.03
   },
   "dimensions": {
     "minecraft:the_nether": {
@@ -17,5 +25,6 @@
       "exp2FogMult": 1.75
     }
   },
-  "videoOptionsButton": true
+  "videoOptionsButton": true,
+  "hasClosedToast": false
 }
