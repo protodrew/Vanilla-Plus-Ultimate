@@ -4,9 +4,9 @@
 	// Should shape excavating include different blocks
 	"includeDifBlocks": false,
 	// Shape activation key
-	"shapeKey": "",
+	"shapeKey": "key.keyboard.unknown",
 	// Shape type cycle key, sneak to reverse cycle
-	"cycleKey": "",
+	"cycleKey": "key.keyboard.unknown",
 	// Currently selected shape
 	"selectedShape": "LAYER"
 }

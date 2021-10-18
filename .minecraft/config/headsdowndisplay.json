@@ -1,0 +1,25 @@
+{
+  "hotbar": {
+    "fade": false,
+    "lower": true,
+    "revealAutomatically": true,
+    "hideAutomatically": true,
+    "hideLevel": "HOTBAR",
+    "maxY": 23,
+    "lowerDelay": 30,
+    "fadeDelay": 28,
+    "fadeDuration": 5,
+    "speed": 2.0,
+    "acceleration": 0.2,
+    "trigger": {
+      "slot": true,
+      "item": true,
+      "key": true
+    }
+  },
+  "arm": {
+    "mainHandHideCondition": "ALWAYS",
+    "mainHandHideType": "ARM",
+    "offHandHideCondition": "ALWAYS"
+  }
+}

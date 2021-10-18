@@ -1,10 +1,10 @@
 {
   "defaultConfig": {
-    "enabled": true,
+    "enabled": false,
     "type": "LINEAR",
-    "linearFogStartMult": 0.32629108,
-    "linearFogEndMult": 0.8803,
-    "expFogMult": 0.29,
+    "linearFogStartMult": 1.0,
+    "linearFogEndMult": 1.0,
+    "expFogMult": 1.95,
     "exp2FogMult": 0.32
   },
   "waterConfig": {

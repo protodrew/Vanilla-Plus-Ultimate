@@ -2,6 +2,10 @@
 .gitignore
 .minecraft/crash-reports
 .minecraft/hs_err_pid56405.log
+.minecraft/hs_err_pid9129.log
 .minecraft/logs
 .minecraft/saves
+.minecraft/schematics
 .minecraft/screenshots
+README.md
+screenshots

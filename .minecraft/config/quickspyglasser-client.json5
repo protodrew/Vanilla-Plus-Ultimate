@@ -1,6 +1,6 @@
 {
-	"showSpyglassOverlay": true,
+	"showSpyglassOverlay": false,
 	"playSpyglassSound": true,
-	"cinematicModeZoom": false,
+	"cinematicModeZoom": true,
 	"mouseSensitivity": 100
 }
