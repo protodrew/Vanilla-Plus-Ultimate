@@ -1,0 +1,6 @@
+{
+  "enabled": true,
+  "modify_gamma": true,
+  "mn_skyBrightnessDivisorMultiplier": "5",
+  "gammaDivisor": "3"
+}

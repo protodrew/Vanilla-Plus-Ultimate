@@ -96,6 +96,22 @@
     "betterend:cave_bush": {
       "spawnRateFactor": 1.0,
       "isConiferBlock": false
+    },
+    "fruitful:flowering_oak_leaves": {
+      "spawnRateFactor": 1.0,
+      "isConiferBlock": false
+    },
+    "fruitful:budding_oak_leaves": {
+      "spawnRateFactor": 1.0,
+      "isConiferBlock": false
+    },
+    "fruitful:apple_oak_leaves": {
+      "spawnRateFactor": 1.0,
+      "isConiferBlock": false
+    },
+    "fruitful:blossoming_oak_leaves": {
+      "spawnRateFactor": 1.0,
+      "isConiferBlock": false
     }
   }
 }

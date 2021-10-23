@@ -1,2 +1,3 @@
+DynSFX-1.5.0+1.17+.jar
 illuminations-uninstaller.jar
 fabric-api-0.40.1+1.17.jar
