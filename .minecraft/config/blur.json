@@ -5,5 +5,6 @@
   "fadeTimeMillis": 200,
   "radius": 8,
   "gradientStartColor": 75000000,
-  "gradientEndColor": 75000000
+  "gradientEndColor": 75000000,
+  "showScreenTitle": false
 }

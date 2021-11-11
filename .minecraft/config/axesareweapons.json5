@@ -4,5 +4,6 @@
 	"enableFireAspect": false,
 	"enableModded": false,
 	"enableForEnchantingTable": true,
-	"enableDamageInEnchantingTable": true
+	"enableDamageInEnchantingTable": true,
+	"allowSilkTouchWithLooting": true
 }

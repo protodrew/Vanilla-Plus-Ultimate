@@ -37,8 +37,6 @@ key_modifiers_key.dynamicfps.toggle_disabled:
 key_modifiers_key.entityculling.toggle:
 key_modifiers_key.fabrishot.screenshot:
 key_modifiers_key.antighost.reveal:
-key_modifiers_dsurround.text.keybind.individualSoundConfig:
-key_modifiers_dsurround.text.keybind.diagnosticHud:
 key_modifiers_iris.keybind.reload:
 key_modifiers_iris.keybind.toggleShaders:
 key_modifiers_iris.keybind.shaderPackSelection:

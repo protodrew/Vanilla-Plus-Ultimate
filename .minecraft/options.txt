@@ -24,7 +24,7 @@ fov:0.5
 screenEffectScale:1.0
 fovEffectScale:1.0
 gamma:0.5
-renderDistance:28
+renderDistance:20
 entityDistanceScaling:1.0
 guiScale:3
 particles:0
@@ -34,7 +34,7 @@ graphicsMode:1
 ao:2
 biomeBlendRadius:7
 renderClouds:true
-resourcePacks:["vanilla","file/VanillaTweaks_r825388.zip","Fabric Mods","atmosfera/dungeons","betterbeds/fancybeds","charmonium/journeyman","cullleaves/smartleaves","lambdabettergrass/default","continuity/glass_pane_culling_fix"]
+resourcePacks:["vanilla","file/VanillaTweaks_r825388.zip","Fabric Mods","atmosfera/dungeons","betterbeds/fancybeds","charmonium/journeyman","cullleaves/smartleaves","lambdabettergrass/default"]
 incompatibleResourcePacks:[]
 lastServer:
 lang:en_us
@@ -107,8 +107,6 @@ key_key.dynamicfps.toggle_disabled:key.keyboard.unknown
 key_key.entityculling.toggle:key.keyboard.unknown
 key_key.fabrishot.screenshot:key.keyboard.f9
 key_key.antighost.reveal:key.keyboard.g
-key_dsurround.text.keybind.individualSoundConfig:key.keyboard.unknown
-key_dsurround.text.keybind.diagnosticHud:key.keyboard.unknown
 key_iris.keybind.reload:key.keyboard.r
 key_iris.keybind.toggleShaders:key.keyboard.k
 key_iris.keybind.shaderPackSelection:key.keyboard.o
@@ -122,8 +120,8 @@ key_presencefootsteps.settings.key:key.keyboard.f10
 key_key.quickspyglasser.use:key.keyboard.c
 key_seamless_loading_screen.keybind.config:key.keyboard.g
 key_key.slotlock:key.keyboard.left.alt
-soundCategory_master:0.0
-soundCategory_music:0.5046948
+soundCategory_master:0.50110376
+soundCategory_music:0.2535211
 soundCategory_record:1.0
 soundCategory_weather:1.0
 soundCategory_block:1.0
@@ -132,6 +130,9 @@ soundCategory_neutral:1.0
 soundCategory_player:1.0
 soundCategory_ambient:1.0
 soundCategory_voice:1.0
+soundCategory_ui:1.0
+soundCategory_chat:1.0
+soundCategory_effects:1.0
 modelPart_cape:true
 modelPart_jacket:true
 modelPart_left_sleeve:true

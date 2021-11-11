@@ -1,6 +1,7 @@
 {
   "generate_in_villages": true,
   "consume_infinite_knowledge_scroll_on_use": false,
+  "store_waystone_data_on_sneak_break": true,
   "can_owners_redeem_payments": false,
   "cost_amount": 1,
   "cost_type": "level",

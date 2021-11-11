@@ -1,0 +1,1 @@
+namespace: minecraft; class: dev.stashy.extrasounds.mapping.VanillaGenerator$$Lambda$4370/0x0000000801782518
